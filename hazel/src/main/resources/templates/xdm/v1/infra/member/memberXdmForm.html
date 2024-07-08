@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{xdm/v1/infra/include/head :: head}"></div>
+
+<style type="text/css">
+
+	.addScroll{
+		overflow-y:auto;
+		height: 200px;
+		background-color:#E9ECEF;
+		padding-top:5px; 
+		padding-left:5px;
+	}
+ 	
+	.input-file-button{
+		padding: 4px 25px;
+		background-color:#FF6600;
+		border-radius: 4px;
+		color: white;
+		cursor: pointer;
+	}
+
+</style>
+
+<body>
+
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+
+<div th:replace="~{xdm/v1/infra/include/leftMenu :: leftMenu}"></div>          
+      
+<div th:replace="~{xdm/v1/infra/include/top :: top}"></div>         
+      
+<div class="content">
+	<nav class="mb-2" aria-label="breadcrumb">
+		<ol class="breadcrumb mb-0">
+			<li class="breadcrumb-item"><a href="#!">Page 1</a></li>			<!-- ### -->
+			<li class="breadcrumb-item"><a href="#!">Page 2</a></li>			<!-- ### -->
+			<li class="breadcrumb-item active">Default</li>								<!-- ### -->
+		</ol>
+	</nav>
+	<div class="mb-9">
+	  <div class="row g-3 mb-4">
+	    <div class="col-auto">
+	      <h2 class="mb-0">Member</h2>																<!-- ### -->
+	    </div>
+	  </div>
+		<div class="card shadow-none border border-300 my-4" data-component-card="data-component-card">
+			<div class="card-header p-4 border-bottom border-300 bg-soft">
+				<div class="row g-3 justify-content-between align-items-center">
+					<div class="col-12 col-md">
+						<h4 class="text-900 mb-0">기본정보</h4>
+					</div>
+				</div>
+			</div>
+			<div class="card-body p-0">
+				<div class="p-4 code-to-copy">
+					<form id="form" name="form" method="post" autocomplete="off" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate="">
+			
+<div th:replace="~{xdm/v1/infra/member/memberXdmVo :: vo}"></div>			<!-- ### --> 					
+						
+						<div class="col-md-3">
+							<label for="ifmmSeq" class="form-label fs--1">코드 <span class="text-danger fs-0">*</span></label>
+							<input type="text" id="ifmmSeq" name="ifmmSeq" th:value="${item?.ifmmSeq}" maxlength="20" placeholder="자동생성" disabled class="form-control"/>
+						</div>
+						<div class="col-md-9">
+						</div>						
+						<div class="col-md-3">
+							<label for="ifmmId" class="form-label fs--1">아이디 <span class="text-danger fs-0">*</span></label>
+							<input type="text" id="ifmmId" name="ifmmId" th:value="${item?.ifmmId}" maxlength="20" placeholder="영대소문자,숫자" class="form-control"/>
+							<div class="invalid-feedback" id="ifmmIdFeedback"></div>
+						</div>
+						<div class="col-md-3">
+							<label for="ifmmName" class="form-label fs--1">이름 <span class="text-danger fs-0">*</span></label>
+							<input type="text" id="ifmmName" name="ifmmName" th:value="${item?.ifmmName}" maxlength="20" placeholder="한글, 영대소문자, 숫자" class="form-control"/>
+							<div class="invalid-feedback" id="ifmmNameFeedback"></div>
+						</div>
+<th:block th:if="${#strings.isEmpty(item?.ifmmSeq)}">			<!-- ### -->								
+						<div class="col-md-3">
+							<label for="ifmmPassword" class="form-label fs--1">비밀번호 <span class="text-danger fs-0">*</span></label>
+							<input type="password" id="ifmmPassword" name="ifmmPassword" th:value="${item?.ifmmPassword}" maxlength="20" placeholder="영대소문자, 숫자" class="form-control"/>
+							<div class="invalid-feedback" id="ifmmPasswordFeedback"></div>
+						</div>				
+						<div class="col-md-3">
+							<label for="ifmmPasswordRe" class="form-label fs--1">비밀번호 확인 <span class="text-danger fs-0">*</span></label>
+							<input type="password" id="ifmmPasswordRe" name="ifmmPasswordRe" th:value="${item?.ifmmPasswordRe}" maxlength="20" placeholder="영대소문자, 숫자" class="form-control"/>
+							<div class="invalid-feedback" id="ifmmPasswordReFeedback"></div>
+						</div>				
+</th:block>
+<th:block th:if="${not #strings.isEmpty(item?.ifmmSeq)}">			<!-- ### -->								
+						<div class="col-md-6">
+						</div>				
+</th:block>					
+						<div class="col-md-3">
+							<label for="ifmmGenderCd" class="form-label fs--1">성별 <span class="text-danger fs-0">*</span></label>
+							<select id="ifmmGenderCd" name="ifmmGenderCd" class="form-select">
+								<option value="">선택하세요</option>
+								<option th:each="list : ${@codeService.selectListCachedCode(3)}" th:value="${list.ifcdSeq}" th:text="${list.ifcdName}" th:selected="${list.ifcdSeq} == ${item?.ifmmGenderCd}"></option>
+							</select>							
+							<div class="invalid-feedback" id="ifmmGenderCdFeedback"></div>
+						</div>				
+						<div class="col-md-3">
+							<label for="ifmmDob" class="form-label fs--1">출생일 <span class="text-danger fs-0">*</span></label>
+							<input type="text" id="ifmmDob" name="ifmmDob" th:value="${item?.ifmmDob}" maxlength="20" placeholder="영대소문자, 숫자" class="form-control"/>
+							<div class="invalid-feedback" id="ifmmDobFeedback"></div>
+						</div>				
+						<div class="col-md-3">
+							<label for="ifmeEmailFull" class="form-label fs--1">이메일</label>
+							<input type="text" id="ifmeEmailFull" name="ifmeEmailFull" th:value="${item?.ifmeEmailFull}" maxlength="20" placeholder="영대소문자, 숫자" class="form-control"/>
+							<div class="invalid-feedback" id="ifmeEmailFullFeedback"></div>
+						</div>				
+						<div class="col-md-3">
+							<label for="ifmpNumber" class="form-label fs--1">전화번호</label>
+							<input type="text" id="ifmpNumber" name="ifmpNumber" th:value="${item?.ifmpNumber}" maxlength="20" placeholder="숫자만" class="form-control"/>
+							<div class="invalid-feedback" id="ifmpNumberFeedback"></div>
+						</div>
+						<div class="col-md-3">
+							<input type="hidden" id="ifmaLat" name="ifmaLat"> 
+							<input type="hidden" id="ifmaLng" name="ifmaLng"> 
+							<label for="ifmaZipcode" class="form-label fs--1">우편번호</label>
+							<div class="input-group input-group-sm">
+								<input type="text" id="ifmaZipcode" name="ifmaZipcode" th:value="${item?.ifmaZipcode}" maxlength="20" placeholder="숫자만" class="form-control" readonly/>
+								<button type="button" id="btnAddressClear" class="btn btn-outline-secondary"><i class="fa-solid fa-x"></i></button>
+							</div>
+							<div class="invalid-feedback" id="ifmaZipcodeFeedback"></div>
+						</div>						
+						<div class="col-md-3">
+							<label for="ifmaAddress1" class="form-label fs--1">주소</label>
+							<input type="text" id="ifmaAddress1" name="ifmaAddress1" th:value="${item?.ifmaAddress1}" maxlength="20" placeholder="숫자만" class="form-control" readonly/>
+							<div class="invalid-feedback" id="ifmaAddress1Feedback"></div>
+						</div>						
+						<div class="col-md-3">
+							<label for="ifmaAddress2" class="form-label fs--1">상세주소</label>
+							<input type="text" id="ifmaAddress2" name="ifmaAddress2" th:value="${item?.ifmaAddress2}" maxlength="20" placeholder="숫자만" class="form-control"/>
+							<div class="invalid-feedback" id="ifmpNumberFeedback"></div>
+						</div>						
+						<div class="col-md-3">
+							<label for="ifmaAddress3" class="form-label fs--1">참고항목</label>
+							<input type="text" id="ifmaAddress3" name="ifmaAddress3" th:value="${item?.ifmaAddress3}" maxlength="20" placeholder="숫자만" class="form-control" readonly/>
+							<div class="invalid-feedback" id="ifmaAddress3Feedback"></div>
+						</div>						
+						<div class="col-md-6" th:with="type=2, name='uploadImg'">
+						<!-- 	<label for="ifcdNameEng" class="form-label fs--1">코드 이름 (영문)</label> -->
+<input type="hidden" th:id="|${name}Type|" th:name="|${name}Type|" th:value="${type}"/>
+<input type="hidden" th:id="|${name}MaxNumber|" th:name="|${name}MaxNumber|" value="0"/>
+<input type="hidden" th:id="|${name}DeleteSeq|" th:name="|${name}DeleteSeq|"/>
+<input type="hidden" th:id="|${name}DeletePathFile|" th:name="|${name}DeletePathFile|"/>
+<label for="uploadImg" class="form-label input-file-button fs--1">이미지첨부</label>
+<input class="form-control form-control-sm" 
+th:id="${name}"
+th:name="${name}"
+type="file"
+multiple="multiple"
+style="display: none;"
+th:onChange="upload([[${name}]],[[${type}]],0,1,0,0,1)"
+/>
+<!-- th:onChange="'javascript:upload(\''+ [[${name}]] +'\','+ [[${type}]] +',0,1,0,0,1);'" -->
+<!-- th:onChange="'javascript:upload(\''+ ${name} +'\','+ ${type} +',0,1,0,0,1);'" -->
+<!-- onChange="upload('[[${name}]]', '${type}', 0, 1, 0, 0, 1);" -->
+<div th:id="|${name}Preview|" class="addScroll">
+<div th:id="|imgDiv_${type}|" th:each="listUploaded : ${listUploaded}" style="display: inline-block; height: 95px;">
+	<img th:src="${listUploaded.path}" class="rounded" width= "85px" height="85px" style="cursor:pointer;" th:data-value="${listUploaded.path}" th:onClick="|openViewer(${listUploaded.type},${listUploaded.sort},this.getAttribute('data-value'));|">
+<div style="position: relative; top:-85px; left:5px"><span style="color: red; cursor:pointer;" >X</span></div>
+<!-- 
+<c:forEach items="${listUploaded}" var="listUploaded" varStatus="statusUploaded">
+<c:if test="${listUploaded.type eq type }">
+ -->
+ 
+<!--  
+<div th:id="|imgDiv_${type}|" style="display: inline-block; height: 95px;">
+<img src="" class="rounded" width= "85px" height="85px" style="cursor:pointer;" onClick="openViewer();">
+<div style="position: relative; top:-85px; left:5px"><span style="color: red; cursor:pointer;" onClick="delImgDiv('<c:out value="${name }"/>', <c:out value="${type }"/>,<c:out value="${listUploaded.sort }"/>, <c:out value="${listUploaded.seq }"/>, '<c:out value="${listUploaded.path }"/><c:out value="${listUploaded.uuidName }"/>')">X</span></div>
+</div>
+ -->
+
+<!-- 
+</c:if>
+</c:forEach>
+ -->
+ </div>
+</div>
+
+
+
+						</div>				
+						<div class="col-md-6">
+							비어있음																									            
+
+						</div>										
+						<div class="col-12">
+							<div class="row">
+								<div class="col-6 text-start">
+									<button type="button" id="btnList" class="btn btn-outline-secondary btn-sm btn_custom"><i class="fa-solid fa-list fa-lg"></i></button>
+<th:block th:if="${not #strings.isEmpty(item?.ifmmSeq)}">			<!-- ### -->									
+									<button type="button" id="btnDelete" class="btn btn-danger btn-sm btn_custom"><i class="fa-solid fa-x fa-lg"></i></button>
+									<button type="button" id="btnUelete" class="btn btn-danger btn-sm btn_custom"><i class="fa-regular fa-trash-can fa-lg"></i></button>
+</th:block>
+								</div>
+								<div class="col-6 text-end">
+<!-- 									<button type="button" id="btnForm" class="btn btn-primary btn-sm btn_custom"><i class="fa-regular fa-pen-to-square fa-lg"></i></button> -->
+									<button type="button" id="btnSubmit" class="btn btn-primary btn_custom"><i class="fa-solid fa-database fa-lg"></i></button>
+								</div>
+							</div>          
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+<div th:replace="~{xdm/v1/infra/include/footer :: footer}"></div>   
+
+</div>
+
+<form name="formVo" method="post">
+	<div th:replace="~{xdm/v1/infra/member/memberXdmVo :: vo}"></div>			<!-- ### -->
+</form>
+
+<script>
+	var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
+	var navbarTop = document.querySelector('.navbar-top');
+	
+	if (navbarTopStyle === 'darker') {
+		navbarTop.classList.add('navbar-darker');
+	}
+
+	var navbarVerticalStyle = window.config.config.phoenixNavbarVerticalStyle;
+	var navbarVertical = document.querySelector('.navbar-vertical');
+	if (navbarVertical && navbarVerticalStyle === 'darker') {
+		navbarVertical.classList.add('navbar-darker');
+	}
+</script>
+      
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+<div th:replace="~{xdm/v1/infra/include/customize :: customize}"></div>
+
+<div th:replace="~{xdm/v1/infra/include/modal :: modal}"></div>
+
+<div th:replace="~{xdm/v1/infra/include/linkJs :: linkJs}"></div>
+
+<script type="text/javascript">
+
+	window.addEventListener('load', function() {
+		$("#ifmmDob").datepicker();
+	});
+	
+	let goUrlXdmList = "/v1/infra/member/memberXdmList";											/* ### */
+	let goUrlXdmAjaxList = "/v1/infra/member/memberXdmAjaxList";							/* ### */
+	let goUrlXdmInst = "/v1/infra/member/memberXdmInst";											/* ### */
+	let goUrlXdmUpdt = "/v1/infra/member/memberXdmUpdt";											/* ### */
+	let goUrlXdmDele = "/v1/infra/member/memberXdmDele";											/* ### */
+	let goUrlXdmUele = "/v1/infra/member/memberXdmUele";											/* ### */
+	
+	let seq = document.querySelector("input[name=ifmmSeq]");							/* ### */
+	
+	var aaaa;
+	
+	function validationInst() {
+	    if(validationUpdt() == false) return false;
+	}
+	
+	
+	function validationUpdt() {
+// 		if(!checkSelectNull('ifcgSeq', 2, "코드그룹을 선택해 주세요.")) return false;
+// 		if(!checkOnlyEnglishNumber('ifcdSeqAnother', 2, 1, "코드 (Another)는 영대소문자, 숫자만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyKoreanEnglishNumber('ifcdName', 2, 0, "코드 이름은 한글, 영문대소문자, 숫자만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyEnglishNumber('ifcdNameEng', 2, 1, "코드 이름 (영문)는 영대소문자, 숫자만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyNumber('ifcdOrder', 2, 0, 1, 0, 255, "순서는 숫자(0~255)만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyEnglishNumber('ifcdReferenceV1', 2, 1, "예비1 (varchar type)은 영문대소문자, 숫자만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyEnglishNumber('ifcdReferenceV2', 2, 1, "예비2 (varchar type)은 영문대소문자, 숫자만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyEnglishNumber('ifcdReferenceV3', 2, 1, "예비3 (varchar type)은 영문대소문자, 숫자만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyEnglishNumber('ifcdReferenceV4', 2, 1, "예비4 (varchar type)은 영문대소문자, 숫자만 입력 가능합니다.")) return false;		
+// 		if(!checkOnlyNumber('ifcdReferenceI1', 2, 1, 1, -128, 127, "예비1 (Int type)은 숫자(-128~127)만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyNumber('ifcdReferenceI2', 2, 1, 1, -128, 127, "예비2 (Int type)은 숫자(-128~127)만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyNumber('ifcdReferenceI3', 2, 1, 1, -128, 127, "예비3 (Int type)은 숫자(-128~127)만 입력 가능합니다.")) return false;
+// 		if(!checkOnlyNumber('ifcdReferenceI4', 2, 1, 1, -128, 127, "예비4 (Int type)은 숫자(-128~127)만 입력 가능합니다.")) return false;
+	}
+	
+	
+	$("#ifmaZipcode, #ifmaAddress1, #ifmaAddress3").on("click", function(){	
+	    sample4_execDaumPostcode();
+	});	  
+	
+	
+	function sample4_execDaumPostcode() {
+		new daum.Postcode({
+			oncomplete: function(data) {
+				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+				
+				// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				var roadAddr = data.roadAddress; // 도로명 주소 변수
+				var extraRoadAddr = ''; // 참고 항목 변수
+				
+				// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+				// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+				if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+				    extraRoadAddr += data.bname;
+				}
+				// 건물명이 있고, 공동주택일 경우 추가한다.
+				if(data.buildingName !== '' && data.apartment === 'Y'){
+				   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+				}
+				// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+				if(extraRoadAddr !== ''){
+				    extraRoadAddr = ' (' + extraRoadAddr + ')';
+				}
+				
+				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+				document.getElementById('ifmaZipcode').value = data.zonecode;
+				document.getElementById("ifmaAddress1").value = roadAddr;
+				/* document.getElementById("").value = data.jibunAddress; */
+				
+				document.getElementById("ifmaAddress2").value = "";
+				
+				// 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+				if(roadAddr !== ''){
+				    document.getElementById("ifmaAddress3").value = extraRoadAddr;
+				} else {
+				    document.getElementById("ifmaAddress3").value = '';
+				}
+	                
+/*  
+				var guideTextBox = document.getElementById("guide");
+				// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+				if(data.autoRoadAddress) {
+				    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+				    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+				    guideTextBox.style.display = 'block';
+				
+				} else if(data.autoJibunAddress) {
+				    var expJibunAddr = data.autoJibunAddress;
+				    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+				    guideTextBox.style.display = 'block';
+				} else {
+				    guideTextBox.innerHTML = '';
+				    guideTextBox.style.display = 'none';
+				}
+*/               
+					
+/* lat and lng from address s */
+				// 주소-좌표 변환 객체를 생성
+				var geocoder = new daum.maps.services.Geocoder();
+				// 주소로 좌표를 검색
+				geocoder.addressSearch(roadAddr, function(result, status) {
+				 
+					// 정상적으로 검색이 완료됐으면,
+					if (status == daum.maps.services.Status.OK) {
+						document.getElementById("ifmaLat").value=result[0].y;
+						document.getElementById("ifmaLng").value=result[0].x;
+					}
+				});
+/* lat and lng from address e */
+			}
+		}).open();
+		$("#ifmaAddress2").focus();
+	}	
+	
+
+	$("#btnAddressClear").on("click", function(){	
+		$("#ifmaZipcode").val('');
+		$("#ifmaAddress1").val('');
+		$("#ifmaAddress2").val('');
+		$("#ifmaAddress3").val('');
+		$("#ifmaLat").val('');
+		$("#ifmaLng").val('');
+	});
+	
+	
+	upload = function(objName, seq, allowedMaxTotalFileNumber, allowedExtdiv, allowedEachFileSize, allowedTotalFileSize, uiType) {
+		
+//		objName 과 seq 는 jsp 내에서 유일 하여야 함.
+//		memberProfileImage: 1
+//		memberImage: 2
+//		memberFile : 3
+
+//		uiType: 1 => 이미지형
+//		uiType: 2 => 파일형
+//		uiType: 3 => 프로필형
+
+		var files = $("#" + objName +"")[0].files;
+		var filePreview = $("#" + objName +"Preview");
+		var numbering = [];
+		var maxNumber = 0;
+		
+		if(uiType == 1) {
+			var uploadedFilesCount = document.querySelectorAll("#" + objName + "Preview > div > img").length;
+			var tagIds = document.querySelectorAll("#" + objName + "Preview > div");
+			
+			for(var i=0; i<tagIds.length; i++){
+				var tagId = tagIds[i].getAttribute("id").split("_");
+				numbering.push(tagId[2]);
+			}
+			
+			alert(numbering.length);
+			
+			for(let i=0; i < numbering.length; i++){
+// 				alert(i);
+			}
+			
+			
+			
+			if(uploadedFilesCount > 0){
+				numbering.sort();
+				maxNumber = parseInt(numbering[numbering.length-1]) + parseInt(1);
+			}
+		} else if(uiType == 2){
+			var uploadedFilesCount = document.querySelectorAll("#" + objName + "Preview > li").length;
+			var tagIds = document.querySelectorAll("#" + objName + "Preview > li");
+
+			for(var i=0; i<tagIds.length; i++){
+				var tagId = tagIds[i].getAttribute("id").split("_");
+				numbering.push(tagId[2]);
+			}
+			
+			if(uploadedFilesCount > 0){
+				numbering.sort();
+				maxNumber = parseInt(numbering[numbering.length-1]) + parseInt(1);
+			}
+		} else {
+			// by pass
+		}
+		
+		$("#" + objName + "MaxNumber").val(maxNumber);
+
+		var totalFileSize = 0;
+		var filesCount = files.length;
+		var filesArray = [];
+		
+		allowedMaxTotalFileNumber = allowedMaxTotalFileNumber == 0 ? MAX_TOTAL_FILE_NUMBER : allowedMaxTotalFileNumber;
+		allowedEachFileSize = allowedEachFileSize == 0 ? MAX_EACH_FILE_SIZE : allowedEachFileSize;
+		allowedTotalFileSize = allowedTotalFileSize == 0 ? MAX_TOTAL_FILE_SIZE : allowedTotalFileSize;
+		
+		if(checkUploadedTotalFileNumber(files, allowedMaxTotalFileNumber, filesCount, uploadedFilesCount) == false) { return false; }
+		
+		for (var i=0; i<filesCount; i++) {
+			if(checkUploadedExt(files[i].name, seq, allowedExtdiv) == false) { return false; }
+			if(checkUploadedEachFileSize(files[i], seq, allowedEachFileSize) == false) { return false; }
+
+			totalFileSize += files[i].size;
+			
+			filesArray.push(files[i]);
+		}
+
+		if(checkUploadedTotalFileSize(seq, totalFileSize, allowedTotalFileSize) == false) { return false; }
+		
+		if (uiType == 1) {
+			for (var i=0; i<filesArray.length; i++) {
+				var file = filesArray[i];
+
+				var picReader = new FileReader();
+			    picReader.addEventListener("load", addEventListenerCustom (objName, seq, i, file, filePreview, maxNumber));
+			    picReader.readAsDataURL(file);
+			}			
+		} else if(uiType == 2) {
+			for (var i = 0 ; i < filesCount ; i++) {
+				addUploadLi(objName, seq, i, $("#" + objName +"")[0].files[i].name, filePreview, maxNumber);
+			}
+		} else if (uiType == 3) {
+			var fileReader = new FileReader();
+			 fileReader.onload = function () {
+				 $("#uploadImgProfilePreview").attr("src", fileReader.result);		/* #-> */
+			 }	
+			 fileReader.readAsDataURL($("#" + objName +"")[0].files[0]);
+		} else {
+			return false;
+		}
+		return false;
+	}
+	
+	
+	addEventListenerCustom = function (objName, type, i, file, filePreview, maxNumber) { 
+		return function(event) {
+			var imageFile = event.target;
+			var sort = parseInt(maxNumber) + i;
+
+			var divImage = "";
+			divImage += '<div id="imgDiv_'+type+'_'+ sort +'" style="display: inline-block; height: 95px;">';
+			divImage += '	<img src="'+ imageFile.result +'" class="rounded" width= "85px" height="85px">';
+			divImage += '	<div style="position: relative; top:-85px; left:5px"><span style="color: red; cursor:pointer;" onClick="delImgDiv(0,' + type +','+ sort +')">X</span></div>';
+			divImage += '</div> ';
+			
+			filePreview.append(divImage);
+	    };
+	}
+	
+	
+	delImgDiv = function(objName, type, sort, deleteSeq, pathFile) {
+		
+		$("#imgDiv_"+type+"_"+sort).remove();
+		
+		var objDeleteSeq = $('input[name='+ objName +'DeleteSeq]');
+		var objDeletePathFile = $('input[name='+ objName +'DeletePathFile]');
+
+		if(objDeleteSeq.val() == "") {
+			objDeleteSeq.val(deleteSeq);
+		} else {
+			objDeleteSeq.val(objDeleteSeq.val() + "," + deleteSeq);
+		}
+		
+		if(objDeletePathFile.val() == "") {
+			objDeletePathFile.val(pathFile);
+		} else {
+			objDeletePathFile.val(objDeletePathFile.val() + "," + pathFile);
+		}
+	}
+	
+	
+	addUploadLi = function (objName, type, i, name, filePreview, maxNumber){
+
+		var sort = parseInt(maxNumber) + i;
+		
+		var li ="";
+		li += '<input type="hidden" id="'+ objName +'Process_'+type+'_'+ sort +'" name="'+ objName +'Process" value="1">';
+		li += '<input type="hidden" id="'+ objName +'Sort_'+type+'_'+ sort +'" name="'+ objName +'Sort" value="'+ sort +'">';
+		li += '<li id="li_'+type+'_'+sort+'" class="list-group-item d-flex justify-content-between align-items-center">';
+		li += name;
+		li +='<span class="badge bg-danger rounded-pill" onClick="delLi(0,'+ type +','+ sort +')"><i class="fa-solid fa-x" style="cursor: pointer;"></i></span>';
+		li +='</li>';
+		
+		filePreview.append(li);
+	}
+	
+	
+	delLi = function(objName, type, sort, deleteSeq, pathFile) {
+		
+		$("#li_"+type+"_"+sort).remove();
+
+		var objDeleteSeq = $('input[name='+ objName +'DeleteSeq]');
+		var objDeletePathFile = $('input[name='+ objName +'DeletePathFile]');
+
+		if(objDeleteSeq.val() == "") {
+			objDeleteSeq.val(deleteSeq);
+		} else {
+			objDeleteSeq.val(objDeleteSeq.val() + "," + deleteSeq);
+		}
+		
+		if(objDeletePathFile.val() == "") {
+			objDeletePathFile.val(pathFile);
+		} else {
+			objDeletePathFile.val(objDeletePathFile.val() + "," + pathFile);
+		}
+	}
+	
+	openViewer = function (type, sort) {
+		var str = '<c:set var="tmp" value="'+ type +'"/>';
+		$("#modalImgViewer").append(str);
+		$("#modalImgViewer").modal("show");
+	}
+	
+	
+</script>
+
+<script src="/xdm/v1/js/includeXdmForm.js"></script>
+
+</body>
+</html>
