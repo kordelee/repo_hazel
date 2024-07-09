@@ -21,9 +21,9 @@ public class IndexController extends BaseController{
 	String pathRedirectCommonAdt = "";	
 	
 	
-    @RequestMapping(value = "/indexXdmView")
+    @RequestMapping(value = "/indexUsrView")
 	public String indexXdmView(HttpSession httpSession) throws Exception{
-    	return pathCommonXdm + "indexXdmView";
+    	return pathCommonUsr + "indexUsrView";
     }
 
 }

@@ -288,5 +288,11 @@ public class MemberController extends BaseController{
 		returnMap.put("rt", "success");
 		return returnMap;
 	}
+	
+	@RequestMapping(value="findIdUsrForm")
+	public String findIdUsrForm() throws Exception{
+		
+		return pathCommonUsr + "findIdUsrForm";
+	}
     
 }

@@ -17,5 +17,10 @@ public class PlaceController extends BaseController{
 		
 		return pathCommonUsr + "/createPlace";
 	} 
-
+	
+	@RequestMapping(value="/placeUsrList")
+	public String placeUsrList() throws Exception{
+		
+		return pathCommonUsr + "placeUsrList";
+	}
 }
