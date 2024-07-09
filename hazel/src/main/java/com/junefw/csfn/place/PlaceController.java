@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.junefw.common.base.BaseController;
 
 @Controller
-@RequestMapping(value = "/v1/infra/group")
+@RequestMapping(value = "/v1/csfn/place")
 public class PlaceController extends BaseController{
 	
-	String pathCommonUsr = "usr/v1/infra/group/";
+	String pathCommonUsr = "usr/v1/csfn/place/";
 	String pathRedirectCommonUsr = "";
 	
-	@RequestMapping(value = "/createPlace")
-	public String createPlace() {
+	@RequestMapping(value = "/placeUsrForm")
+	public String placeUsrForm() {
 		
-		return pathCommonUsr + "/createPlace";
+		return pathCommonUsr + "placeUsrForm";
 	} 
 	
-	@RequestMapping(value="/placeUsrList")
+	@RequestMapping(value = "/placeUsrList")
 	public String placeUsrList() throws Exception{
 		
 		return pathCommonUsr + "placeUsrList";
