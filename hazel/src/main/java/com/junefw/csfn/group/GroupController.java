@@ -12,15 +12,15 @@ public class GroupController extends BaseController {
 	String pathCommonUsr = "usr/v1/infra/group/";
 	String pathRedirectCommonUsr = "";
 	
-	@RequestMapping(value = "/createUsrGroup")
-	public String createUsrGroup() {
+	@RequestMapping(value = "/groupUsrForm")
+	public String groupUsrForm() {
 		
-		return pathCommonUsr + "/createUsrGroup";
+		return pathCommonUsr + "/groupUsrForm";
 	}
 	
-	@RequestMapping(value = "/group")
+	@RequestMapping(value = "/groupUsrList")
 	public String group() {
 		
-		return pathCommonUsr + "/group";
+		return pathCommonUsr + "/groupUsrList";
 	}
 }

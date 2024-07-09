@@ -6,16 +6,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.junefw.common.base.BaseController;
 
 @Controller
-@RequestMapping(value = "/v1/infra/friend")
+@RequestMapping(value = "/v1/csfn/friend")
 public class FreindController extends BaseController{
 
-	String pathCommonUsr = "usr/v1/infra/friend/";
+	String pathCommonUsr = "usr/v1/csfn/friend/";
 	String pathRedirectCommonUsr = "";
 	
-	@RequestMapping (value = "/frinedResponse")
-	public String frinedResponse() {
+	@RequestMapping (value = "/friendRequestUsrList")
+	public String friendRequestUsrList() {
 		
-		return pathCommonUsr + "frinedResponse";
+		return pathCommonUsr + "friendRequestUsrList";
+	}
+	
+	@RequestMapping (value = "/friendUsrList")
+	public String friendUsrList() {
+		
+		return pathCommonUsr + "friendUsrList";
 	}
 	
 }
