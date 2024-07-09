@@ -1,5 +1,5 @@
-document.write("<script src='/xdm/v1/js/constantsXdm.js'></script>");
-document.write("<script src='/xdm/v1/js/validationXdm.js'></script>");
+document.write("<script src='/usr/v1/js/constantsUsr.js'></script>");
+document.write("<script src='/usr/v1/js/validationUsr.js'></script>");
 
 $.datepicker.setDefaults($.datepicker.regional['ko']);
 $("#shDateStart").datepicker({
