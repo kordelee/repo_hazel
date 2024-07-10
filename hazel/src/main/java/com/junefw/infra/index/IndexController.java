@@ -8,7 +8,7 @@ import com.junefw.common.base.BaseController;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping(value = "/v1/infra/index")
+//@RequestMapping(value = "/v1/infra/index")
 public class IndexController extends BaseController{
 	
 	String pathCommonXdm = "xdm/v1/infra/index/";
@@ -20,10 +20,10 @@ public class IndexController extends BaseController{
 	String pathCommonAdt = "adt/v1/infra/index/";
 	String pathRedirectCommonAdt = "";	
 	
-	
-    @RequestMapping(value = "/indexUsrView")
-	public String indexXdmView(HttpSession httpSession) throws Exception{
+
+	@RequestMapping(value = {"/v1/infra/index/indexUsrView", "/"})
+	public String indexUsrView(HttpSession httpSession) throws Exception{
     	return pathCommonUsr + "indexUsrView";
     }
-
+    
 }
