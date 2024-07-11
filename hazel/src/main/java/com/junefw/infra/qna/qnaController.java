@@ -23,4 +23,10 @@ public class qnaController extends BaseController {
 		
 		return pathCommonUsr + "qnaUsrList";
 	}
+	
+	@RequestMapping(value="/noticeUsrList")
+	public String noticeUsrList() throws Exception{
+		
+		return pathCommonUsr + "noticeUsrList";
+	}
 }

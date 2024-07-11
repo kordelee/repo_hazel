@@ -7,7 +7,7 @@ import com.junefw.common.base.BaseController;
 
 @Controller
 @RequestMapping(value = "/v1/csfn/friend")
-public class FreindController extends BaseController{
+public class FriendController extends BaseController{
 
 	String pathCommonUsr = "usr/v1/csfn/friend/";
 	String pathRedirectCommonUsr = "";

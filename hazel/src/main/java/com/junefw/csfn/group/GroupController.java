@@ -19,7 +19,7 @@ public class GroupController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/groupUsrList")
-	public String group() {
+	public String groupUsrList() {
 		
 		return pathCommonUsr + "groupUsrList";
 	}

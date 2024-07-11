@@ -9,6 +9,7 @@
     <!-- ===============================================-->
     <!--    Main Content-->
     <!-- ===============================================-->
+<form method="post" name="form">
     <main class="main" id="top">
 	  <div th:replace="~{usr/v1/infra/include/leftMenu :: leftMenu}"></div>          
       <div th:replace="~{usr/v1/infra/include/top :: top}"></div>
@@ -18,14 +19,16 @@
           <div class="col-auto">
             <h2 class="mb-0">그룹<span class="fw-normal text-700 ms-3">(32)</span></h2>
           </div>
-          <div class="col-auto"><a class="btn btn-primary px-5" href="../apps/project-management/create-new.html"><i class="fa-solid fa-plus me-2"></i>그룹추가</a></div>
+          <div class="col-auto"><a class="btn btn-primary px-5" th:href="@{/v1/csfn/group/groupUsrForm}"><i class="fa-solid fa-plus me-2"></i>그룹추가</a></div>
         </div>
         <div class="row justify-content-between align-items-end mb-4 g-3">
           <div class="col-12 col-sm-auto">
             <ul class="nav nav-links mx-n2">
               <li class="nav-item"><a class="nav-link px-2 py-1 active" aria-current="page" href="#"><span>전체</span><span class="text-700 fw-semi-bold">(32)</span></a></li>
-              <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>맛집</span><span class="text-700 fw-semi-bold">(14)</span></a></li>
-              <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>명소</span><span class="text-700 fw-semi-bold">(2)</span></a></li>
+              <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>연인</span><span class="text-700 fw-semi-bold">(14)</span></a></li>
+              <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>가족</span><span class="text-700 fw-semi-bold">(2)</span></a></li>
+              <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>친구</span><span class="text-700 fw-semi-bold">(2)</span></a></li>
+              <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>직장</span><span class="text-700 fw-semi-bold">(2)</span></a></li>
             </ul>
           </div>
           <div class="col-12 col-sm-auto">
@@ -47,7 +50,7 @@
                 <div class="d-flex align-items-center">
                   <h4 class="mb-2 line-clamp-1 lh-sm flex-1 me-5">그룹이름</h4>
                   <div class="hover-actions top-0 end-0 mt-4 me-4">
-                    <button class="btn btn-primary btn-icon flex-shrink-0" data-bs-toggle="modal" data-bs-target="#projectsCardViewModal"><span class="fa-solid fa-chevron-right"></span></button>
+                    <button class="btn btn-primary btn-icon flex-shrink-0" id="goPlaceList" data-bs-toggle="modal" data-bs-target="#projectsCardViewModal"><span class="fa-solid fa-chevron-right"></span></button>
                   </div>
                 </div><span class="badge badge-phoenix fs--2 mb-4 badge-phoenix-success">사용 여부?</span>
                 <div class="d-flex align-items-center mb-2"><span class="fa-solid fa-user me-2 text-700 fs--1 fw-extra-bold"></span>
@@ -1135,6 +1138,7 @@
         </div>
       </div>
     </main>
+  </form>
     <!-- ===============================================-->
     <!--    End of Main Content-->
     <!-- ===============================================-->
@@ -1145,6 +1149,14 @@
     <!-- ===============================================-->
    <div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
 
+	<script>
+	let goUsrPlaceList = "/v1/csfn/place/placeUsrList";
+	
+	document.getElementById("goPlaceList").onclick = function(){
+		form.action = goUsrPlaceList;
+		form.submit();
+	}
+	</script>
   </body>
 
 </html>

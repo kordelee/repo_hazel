@@ -289,10 +289,33 @@ public class MemberController extends BaseController{
 		return returnMap;
 	}
 	
-	@RequestMapping(value="findIdUsrForm")
+	@RequestMapping(value="/findIdUsrForm")
 	public String findIdUsrForm() throws Exception{
 		
 		return pathCommonUsr + "findIdUsrForm";
 	}
     
+	@RequestMapping(value = "/myPageUsrView")
+	public String myPageUsrView() throws Exception{
+	
+		return pathCommonUsr + "myPageUsrView";
+	}
+	
+	@RequestMapping(value = "/signinUsrForm")
+	public String signinUsrForm() throws Exception{
+		
+		return pathCommonUsr + "signinUsrForm";
+	}
+	
+	@RequestMapping(value = "/signupUsrForm")
+	public String signupUsrForm() throws Exception{
+		
+		return pathCommonUsr + "signupUsrForm";
+	}
+	
+	@RequestMapping(value = "/withdrawUsrForm")
+	public String withdrawUsrForm() throws Exception{
+		
+		return pathCommonUsr + "withdrawUsrForm";
+	}
 }
