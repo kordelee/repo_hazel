@@ -1,58 +1,57 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
 
- <div th:replace="~{usr/v1/infra/include/headFull :: head}"></div>
+<div th:replace="~{usr/v1/infra/include/headFull :: headFull}"></div>
 
-  <body>
+<body>
 
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
-    <main class="main" id="top">
-		
+	<!-- ===============================================-->
+	<!--    Main Content-->
+	<!-- ===============================================-->
+	<main class="main" id="top">
+		<div th:replace="~{usr/v1/infra/include/leftMenu :: leftMenu}"></div>
 		<div th:replace="~{usr/v1/infra/include/top :: top}"></div>
-		
-      <div class="container">
-        <div class="row flex-center min-vh-100 py-5">
-          <div class="col-sm-10 col-md-8 col-lg-5 col-xxl-4"><a class="d-flex flex-center text-decoration-none mb-4" th:href="@{/}">
-              <div class="d-flex align-items-center fw-bolder fs-5 d-inline-block"><img src="/xdm/v1/template/phoenix-v1.13.0/assets/img/icons/logo.png" alt="phoenix" width="58" />
-              </div>
-            </a>
-            <div class="px-xxl-5">
-              <div class="text-center mb-6">
-                <h4 class="text-1000">계정을 삭제 하시겠습니까?</h4>
-                <p class="text-700 mb-5">삭제 하시려면 아래 문구를 똑같이 입력해주세요.</p>
-                <p class="text-700 mb-5">아이디 표출</p>
-                <form class="d-flex align-items-center mb-5">
-                  <input class="form-control flex-1" id="email" type="email" placeholder="삭제 하시려면 아이디를 입력해주세요" />
-                  <button class="btn btn-primary ms-2">삭제<span class="fas fa-chevron-right ms-2"></span></button>
-                </form><a class="fs--1 fw-bold" href="#!">돌아가기</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    <!-- ===============================================-->
-    <!--    End of Main Content-->
-    <!-- ===============================================-->
+		<div class="content">
+			<form class="mb-9">
+				<section class="pt-1 ">
+
+					<div class="container-small">
+						<div class="row align-items-center justify-content-between g-3 mb-4">
+							<div class="col-auto">
+								<h2 class="mb-0">회원탈퇴</h2>
+							</div>
+						</div>
+						<div class="row py-5 pt-12">
+							<div class="col-3"></div>
+							<div class="text-center mb-6 col-sm-10 col-md-8 col-lg-5 col-xxl-4">
+								<h4 class="text-1000">계정을 삭제 하시겠습니까?</h4>
+								<p class="text-700 mb-5">삭제 하시려면 아래 문구를 똑같이 입력해주세요.</p>
+								<p class="text-700 mb-5">아이디 표출</p>
+								<div class="row">
+									<div class="col-9">
+										<input class="form-control flex-1" id="email" type="email"
+											placeholder="삭제 하시려면 아이디를 입력해주세요" />
+									</div>
+									<div class="col-3">
+										<button class="btn btn-primary ms-2">삭제</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- end of .container-->
+
+				</section>
 
 
-    <!-- ===============================================-->
-    <!--    JavaScripts-->
-    <!-- ===============================================-->
-    <script src="../vendors/popper/popper.min.js"></script>
-    <script src="../vendors/bootstrap/bootstrap.min.js"></script>
-    <script src="../vendors/anchorjs/anchor.min.js"></script>
-    <script src="../vendors/is/is.min.js"></script>
-    <script src="../vendors/fontawesome/all.min.js"></script>
-    <script src="../vendors/lodash/lodash.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-    <script src="../vendors/list.js/list.min.js"></script>
-    <script src="../vendors/feather-icons/feather.min.js"></script>
-    <script src="../vendors/dayjs/dayjs.min.js"></script>
-    <script src="../assets/js/phoenix.js"></script>
+			</form>
+		</div>
 
-  </body>
+
+		<!-- ===============================================-->
+		<!--    JavaScripts-->
+		<!-- ===============================================-->
+		<div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
+</body>
 
 </html>
