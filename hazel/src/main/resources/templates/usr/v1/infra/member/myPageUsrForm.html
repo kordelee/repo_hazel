@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+<div th:replace="~{usr/v1/infra/include/headFull :: headFull}"></div>
+
+  <body>
+
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+		<div th:replace="~{usr/v1/infra/include/leftMenu :: leftMenu}"></div>          
+      <div th:replace="~{usr/v1/infra/include/top :: top}"></div>
+      
+      <div class="content">
+        <form class="mb-9">
+          <section class="pt-5 pb-9">
+
+            <div class="container-small">
+              <div class="row align-items-center justify-content-between g-3 mb-4">
+                <div class="col-auto">
+                  <h2 class="mb-0">개인정보 관리</h2>
+                </div>
+              </div>
+              <div>
+                <div class="tab-content" id="profileTabContent">
+                    <div class="row g-3 mb-5">
+                      <div class="col-12 col-lg-6">
+                        <label class="form-label text-1000 fs-0 ps-0 text-capitalize lh-sm" for="fullName">이름</label>
+                        <input class="form-control" id="fullName" type="text" placeholder="Full name" />
+                      </div>
+                      <div class="col-12 col-lg-6">
+                        <label class="form-label text-1000 fs-0 ps-0 text-capitalize lh-sm" for="gender">성별</label>
+                        <select class="form-select" id="gender">
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="non-binary">Non-binary</option>
+                          <option value="not-to-say">Prefer not to say</option>
+                        </select>
+                      </div>
+                      <div class="col-12 col-lg-6">
+                        <label class="form-label text-1000 fs-0 ps-0 text-capitalize lh-sm" for="email">이메일</label>
+                        <input class="form-control" id="email" type="text" placeholder="Email" />
+                      </div>
+                      <div class="col-12 col-lg-6">
+                          <label class="form-label text-1000 fs-0 ps-1 text-capitalize lh-sm mb-1">생년월일</label>
+                          <input class="form-control" id="email" type="text" placeholder="000123" />
+                      </div>
+                      <div class="col-12 col-lg-6">
+                        <label class="form-label text-1000 fw-bold fs-0 ps-0 text-capitalize lh-sm" for="phone">전화번호</label>
+                        <input class="form-control" id="phone" type="text" placeholder="+1234567890" />
+                      </div>
+                      <div class="col-12 col-lg-6">
+                        <label class="form-label text-1000 fw-bold fs-0 ps-0 text-capitalize lh-sm" for="alternative_phone">주소</label>
+                        <input class="form-control" id="alternative_phone" type="text" placeholder="경기도 구리시 !!!!!@@!" />
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <button class="btn btn-primary px-7">개인정보 변경</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <!-- end of .container-->
+    
+          </section>
+    
+    
+        </form>
+      </div>
+        
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+<div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
+  </body>
+
+</html>

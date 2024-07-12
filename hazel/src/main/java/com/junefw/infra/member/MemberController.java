@@ -294,6 +294,12 @@ public class MemberController extends BaseController{
 		
 		return pathCommonUsr + "findIdUsrForm";
 	}
+	
+	@RequestMapping(value="/findPwdUsrForm")
+	public String findPwdUsrForm() throws Exception{
+		
+		return pathCommonUsr + "findPwdUsrForm";
+	}
     
 	@RequestMapping(value = "/myPageUsrView")
 	public String myPageUsrView() throws Exception{
@@ -317,5 +323,23 @@ public class MemberController extends BaseController{
 	public String withdrawUsrForm() throws Exception{
 		
 		return pathCommonUsr + "withdrawUsrForm";
+	}
+	
+	@RequestMapping(value = "/myPageUsrForm")
+	public String myPageUsrForm() throws Exception{
+		
+		return pathCommonUsr + "myPageUsrForm";
+	}
+	
+	@RequestMapping(value = "/myReviewUsrList")
+	public String myReviewUsrList() throws Exception{
+		
+		return pathCommonUsr + "myReviewUsrList";
+	}
+	
+	@RequestMapping(value = "changePwdUsrForm")
+	public String changePwdUsrForm() throws Exception{
+		
+		return pathCommonUsr + "changePwdUsrForm";
 	}
 }

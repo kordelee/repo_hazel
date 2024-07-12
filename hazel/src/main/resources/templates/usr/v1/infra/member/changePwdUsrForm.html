@@ -10,11 +10,12 @@
     <!--    Main Content-->
     <!-- ===============================================-->
     <main class="main" id="top">
+		<div th:replace="~{usr/v1/infra/include/leftMenu :: leftMenu}"></div>
+      <div th:replace="~{usr/v1/infra/include/top :: top}"></div>
+      
       <div class="container">
         <div class="row flex-center min-vh-100 py-5">
-          <div class="col-sm-10 col-md-8 col-lg-5 col-xl-5 col-xxl-3"><a class="d-flex flex-center text-decoration-none mb-4" href="../../../index.html">
-              <div class="d-flex align-items-center fw-bolder fs-5 d-inline-block"><img src="/usr/v1/template/phoenix-v1.13.0/assets/img/icons/logo.png" alt="phoenix" width="58" />
-              </div>
+          <div class="col-sm-10 col-md-8 col-lg-5 col-xl-5 col-xxl-3"><a class="d-flex flex-center text-decoration-none mb-4" th:href="@{/}">
             </a>
             <div class="text-center mb-6">
               <h4 class="text-1000">비밀번호 변경</h4>
