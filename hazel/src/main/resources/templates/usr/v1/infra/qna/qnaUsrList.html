@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US" dir="ltr">
+<html lang="en-US" dir="ltr" xmlns:th="http://www.thymeleaf.org">
 
    <div th:replace="~{usr/v1/infra/include/headFull :: headFull}"></div>
 
@@ -176,7 +176,7 @@
                     </form>
                   </div>
                     <div class="col-auto">
-                      <a class="btn btn-primary px-5" href="../../apps/email/qnaFrom.html">Q&A 작성</a>
+                      <a class="btn btn-primary px-5" th:href="@{/v1/infra/qna/qnaUsrForm}">Q&A 작성</a>
                     </div>
                 </div>
               </div>
