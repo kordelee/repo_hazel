@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <div th:replace="~{usr/v1/infra/include/headFull :: headFull}"></div>
+
+  <body>
+
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+	  <div th:replace="~{usr/v1/infra/include/leftMenu :: leftMenu}"></div>          
+      <div th:replace="~{usr/v1/infra/include/top :: top}"></div>
+      
+      <div class="content pt-0">
+        <div class="email-container">
+			<div class="row mb-4 gx-6 gy-3 align-items-center">
+              <div class="col-auto">
+                <h2 class="mb-0 mt-5">공지사항</h2>
+              </div>
+              
+            </div>
+          <div class="row g-lg-6 mb-8">
+            <div class="col">
+              <div class="card">
+                <div class="card-body overflow-hidden">
+                  <div class="d-flex flex-between-center pb-3 border-bottom mb-4">
+                    <h3 class="flex-1 mb-0 lh-sm line-clamp-1">제목</h3>
+                    <div class="btn-reveal-trigger">
+                    </div>
+                  </div>
+                  <div class="overflow-x-hidden email-detail-content">
+                    <div class="row align-items-center gy-3 gx-0 mb-10">
+                      <div class="col-auto flex-1">
+                        <div class="d-flex mb-1">
+                          <h5 class="mb-0 text-1000 me-2">작성자</h5>
+                          <p class="mb-0 lh-sm text-600 fs--1 d-none d-md-block text-nowrap">&#60; jessica.ball@email.com &#62;</p>
+                        </div>
+                        <p class="mb-0 fs--1"><span class="fw-semi-bold text-900 fs--2 me-1">등록일</span></span></p>
+                      </div>
+                    </div>
+                    <div class="text-1000 fs--1 w-100 w-md-75 mb-8">
+                      <p>Dear Simp sons, </p>
+                      <p>Something in a thirty-acre thermal thicket of thorns and thistles thumped and thundered threatening the three-D thoughts of Matthew the thug - although, theatrically, it was only the thirteen-thousand thistles and thorns through the underneath of his thigh that the thirty year old thug thought of that morning.</p>
+                      <p>How much caramel can a canny canonball cram in a camel if a canny canonball can cram caramel in a camel? If practice makes perfect and perfect needs practice, I’m perfectly practiced and practically perfect.</p>
+                      <p class="mb-0">Best regards,</p>
+                      <p>Jess</p>
+                    </div>
+<!--                     <hr> -->
+<!--                     <div class="d-flex justify-content-between"> -->
+<!--                       <div>관리자</div> -->
+<!--                     </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer position-absolute">
+          <div class="row g-0 justify-content-between align-items-center h-100">
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 mt-2 mt-sm-0 text-900">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2023 &copy;<a class="mx-1" href="https://themewagon.com">Themewagon</a></p>
+            </div>
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 text-600">v1.13.0</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+      
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
+
+  </body>
+
+</html>
