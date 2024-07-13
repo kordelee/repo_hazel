@@ -24,4 +24,10 @@ public class FriendController extends BaseController{
 		return pathCommonUsr + "friendUsrList";
 	}
 	
+	@RequestMapping (value = "/friendMyRequestUsrList")
+	public String friendMyRequestUsrList() {
+		
+		return pathCommonUsr + "friendMyRequestUsrList";
+	}
+	
 }
