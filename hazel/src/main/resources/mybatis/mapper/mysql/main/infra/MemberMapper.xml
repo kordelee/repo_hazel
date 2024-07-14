@@ -140,66 +140,99 @@
 	<insert id="insert">
 		INSERT INTO infrMember (
 			ifmmAdminNy
-			,ifmmSleepNy
-			,ifmmSocialLoginCd
 			,ifmmName
-			,ifmmNameEng
-			,ifmmLastName
-			,ifmmFirstName
-			,ifmmLastNameEng
-			,ifmmFirstNameEng
 			,ifmmId
-			,ifmmPassword
+			,ifmmPwd
 			,ifmmPwdModDate
-			,ifmmNickname
+			,ifmmEmail
 			,ifmmGenderCd
+			,ifmmKoreanNy
 			,ifmmDob
-			,ifmmSavedCd
-			,ifmmMarriageCd
-			,ifmmChildrenNum
-			,ifmmFavoriteColor
-			,ifmmRecommenderSeq
-			,ifmmEmailConsentNy
-			,ifmmSmsConsentNy
-			,ifmmPushConsentNy
-			,ifmmDesc
-			,ifmmDelNy
+			,ifmmPhoneTelecomCd
+			,ifmmPhoneNumber
 			<include refid="Base.insertRegModColumn" />
 		) VALUES (
 			0
-			,0
-			,103
 			,#{ifmmName}
-			,#{ifmmNameEng}
-			,#{ifmmLastName}
-			,#{ifmmFirstName}
-			,#{ifmmLastNameEng}
-			,#{ifmmFirstNameEng}
 			,#{ifmmId}
-			,#{ifmmPassword}
+			,#{ifmmPwd}
 			,#{ifmmPwdModDate}
-			,#{ifmmNickname}
+			,#{ifmmEmail}
 			,#{ifmmGenderCd}
-			<choose>
-				<when test="ifmmDob.equals('')">,NULL</when>  
-				<otherwise>,#{ifmmDob}</otherwise>
-			</choose>
-			,#{ifmmSavedCd}
-			,#{ifmmMarriageCd}
-			,#{ifmmChildrenNum}
-			,#{ifmmFavoriteColor}
-			,#{ifmmRecommenderSeq}
-			,#{ifmmEmailConsentNy}
-			,#{ifmmSmsConsentNy}
-			,#{ifmmPushConsentNy}
-			,#{ifmmDesc}
-			,0
+			,#{ifmmKoreanNy}
+			,#{ifmmDob}
+			,#{ifmmPhoneTelecomCd}
+			,#{ifmmPhoneNumber}
 			<include refid="Base.insertRegModValue" />
 		)
 		 <selectKey resultType="String" keyProperty="ifmmSeq" order="AFTER">
 			SELECT last_insert_id()
 		 </selectKey>
 	</insert>
+	
+<!-- 	<insert id="insert"> -->
+<!-- 		INSERT INTO infrMember ( -->
+<!-- 			ifmmAdminNy -->
+<!-- 			,ifmmSleepNy -->
+<!-- 			,ifmmSocialLoginCd -->
+<!-- 			,ifmmName -->
+<!-- 			,ifmmNameEng -->
+<!-- 			,ifmmLastName -->
+<!-- 			,ifmmFirstName -->
+<!-- 			,ifmmLastNameEng -->
+<!-- 			,ifmmFirstNameEng -->
+<!-- 			,ifmmId -->
+<!-- 			,ifmmPassword -->
+<!-- 			,ifmmPwdModDate -->
+<!-- 			,ifmmNickname -->
+<!-- 			,ifmmGenderCd -->
+<!-- 			,ifmmDob -->
+<!-- 			,ifmmSavedCd -->
+<!-- 			,ifmmMarriageCd -->
+<!-- 			,ifmmChildrenNum -->
+<!-- 			,ifmmFavoriteColor -->
+<!-- 			,ifmmRecommenderSeq -->
+<!-- 			,ifmmEmailConsentNy -->
+<!-- 			,ifmmSmsConsentNy -->
+<!-- 			,ifmmPushConsentNy -->
+<!-- 			,ifmmDesc -->
+<!-- 			,ifmmDelNy -->
+<!-- 			<include refid="Base.insertRegModColumn" /> -->
+<!-- 		) VALUES ( -->
+<!-- 			0 -->
+<!-- 			,0 -->
+<!-- 			,103 -->
+<!-- 			,#{ifmmName} -->
+<!-- 			,#{ifmmNameEng} -->
+<!-- 			,#{ifmmLastName} -->
+<!-- 			,#{ifmmFirstName} -->
+<!-- 			,#{ifmmLastNameEng} -->
+<!-- 			,#{ifmmFirstNameEng} -->
+<!-- 			,#{ifmmId} -->
+<!-- 			,#{ifmmPassword} -->
+<!-- 			,#{ifmmPwdModDate} -->
+<!-- 			,#{ifmmNickname} -->
+<!-- 			,#{ifmmGenderCd} -->
+<!-- 			<choose> -->
+<!-- 				<when test="ifmmDob.equals('')">,NULL</when>   -->
+<!-- 				<otherwise>,#{ifmmDob}</otherwise> -->
+<!-- 			</choose> -->
+<!-- 			,#{ifmmSavedCd} -->
+<!-- 			,#{ifmmMarriageCd} -->
+<!-- 			,#{ifmmChildrenNum} -->
+<!-- 			,#{ifmmFavoriteColor} -->
+<!-- 			,#{ifmmRecommenderSeq} -->
+<!-- 			,#{ifmmEmailConsentNy} -->
+<!-- 			,#{ifmmSmsConsentNy} -->
+<!-- 			,#{ifmmPushConsentNy} -->
+<!-- 			,#{ifmmDesc} -->
+<!-- 			,0 -->
+<!-- 			<include refid="Base.insertRegModValue" /> -->
+<!-- 		) -->
+<!-- 		 <selectKey resultType="String" keyProperty="ifmmSeq" order="AFTER"> -->
+<!-- 			SELECT last_insert_id() -->
+<!-- 		 </selectKey> -->
+<!-- 	</insert> -->
 
 
 	<update id="update">
