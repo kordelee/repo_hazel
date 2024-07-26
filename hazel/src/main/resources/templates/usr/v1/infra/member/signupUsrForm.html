@@ -18,7 +18,7 @@
             <div class="text-center mb-7">
               <h3 class="text-1000">회원가입</h3>
             </div>
-            <form method="post" id="form" name="form" class="needs-validation">
+            <form method="post" id="form" name="form" action="memberUsrInsert" class="needs-validation">
 			  <div class="mb-3 text-start">
                 <label class="form-label" for="ifmmName">이름</label>
                 <input class="form-control" name="ifmmName" id="ifmmName" type="text" placeholder="이름을 입력하세요" />
@@ -32,17 +32,17 @@
               </div>
               <div class="mb-3 text-start">
                 <label class="form-label" for="ifmmPwd">비밀번호</label>
-                <input class="form-control" id="ifmmPwd" type="password" placeholder="비밀번호를 입력하세요" />
+                <input class="form-control" id="ifmmPwd" name="ifmmPwd" type="password" placeholder="비밀번호를 입력하세요" required />
                 <div class="invalid-feedback" id="ifmmPwdFeedback"></div>
               </div>
               <div class="mb-3 text-start">
-                <label class="form-label" for="ifmmPwdCheck">비밀번호 확인</label>
-                <input class="form-control" id="ifmmPwdCheck" type="password" placeholder="비밀번호를 다시 입력하세요" />
-                <div class="invalid-feedback" id="ifmmPwdCheckAnotherFeedback"></div>
+                <label class="form-label" for="ifmmPwdRe">비밀번호 확인</label>
+                <input class="form-control" id="ifmmPwdRe" name="ifmmPwdRe" type="password" placeholder="비밀번호를 다시 입력하세요" />
+                <div class="invalid-feedback" id="ifmmPwdReFeedback"></div>
               </div>
               <div class="mb-3 text-start">
                 <label class="form-label" for="ifmmEmail">이메일</label>
-                <input class="form-control" id="ifmmEmail" type="email" placeholder="name@example.com" />
+                <input class="form-control" id="ifmmEmail" name="ifmmEmail" type="email" placeholder="name@example.com" />
                 <div class="invalid-feedback" id="ifmmEmailFeedback"></div>
               </div>
               <div class="row g-3 mb-3">
@@ -65,7 +65,7 @@
               </div>
               <div class="mb-3 text-start">
                 <label class="form-label" for="ifmmDob">생년월일</label>
-                <input class="form-control" id="ifmmDob" type="password" placeholder="000123" />
+                <input class="form-control" id="ifmmDob" name="ifmmDob" type="date" placeholder="000123" />
                 <div class="invalid-feedback" id="ifmmDobFeedback"></div>
               </div>
             <div class="row g-3 mb-3">
@@ -79,7 +79,7 @@
               </div>
               <div class="col-sm-9">
                 <label class="form-label" for="ifmmPhoneNumber">전화번호</label>
-                <input class="form-control form-icon-input" id="ifmmPhoneNumber" type="text" placeholder="01012345678" />
+                <input class="form-control form-icon-input" id="ifmmPhoneNumber" name="ifmmPhoneNumber" type="text" placeholder="01012345678" />
                 <div class="invalid-feedback" id="ifmmPhoneNumberFeedback"></div>
               </div>
             </div>
@@ -110,7 +110,6 @@
 			return false;
 			} else {
 				alert("123");
-				form.action = goUrlXdmList;
 				form.submit();
 			}
 	}
@@ -122,13 +121,14 @@
 	function validationUpdt(){
 		if(!checkOnlyKorean('ifmmName', 2, 0, "이름은 한글만 입력 가능합니다")) return false;
 		if(!checkOnlyEnglishNumber('ifmmId', 2, 0, "아이디는 영대소문자, 숫자만 입력 가능합니다.")) return false;
-		if(!checkPassword ('ifmmPwd', 2, 0, "비밀번호는 반드시 8~20 영대문자 특수문자를 포함해야 합니다")) return false;
+	//	if(!checkPassword ('ifmmPwd', 2, 0, "비밀번호는 반드시 8~20 영대문자 특수문자를 포함해야 합니다")) return false;
+		if(!checkPasswordAndRe ('ifmmPwd', 2, "비밀번호가 일치하지 않습니다")) return false;
 		if(!checkEmail ('ifmmEmail', 2, 0, "이메일 형식을 확인해주세요")) return false;
 		if(!checkSelectNull('ifmmGenderCd', 2, "성별을 선택하세요")) return false;
-		if(!checkDob(0, 11, 11, "숫자만 입력 가능합니다.")) return false;
-		if(!checkbirthDayH('ifmmDob', 2, 0, "생년월일 6자리를 입력하세요. 예)000123 ")) return false;
-	//	if(!checkSelectNull('ifmmPhoneTelecomCd', 2, "통신사를 선택하세요")) return false;
-		if(!checkPhone('ifmmPhoneTelecomCd', 11, "휴대폰 번호 11자리를 입력하세요")) return false;
+	//	if(!checkDob(0, 11, 11, "숫자만 입력 가능합니다.")) return false;
+	//	if(!checkbirthDayH('ifmmDob', 2, 0, "생년월일 6자리를 입력하세요. 예)000123 ")) return false;
+		if(!checkSelectNull('ifmmPhoneTelecomCd', 2, "통신사를 선택하세요")) return false;
+	//	if(!checkPhone('ifmmPhoneTelecomCd', 11, "휴대폰 번호 11자리를 입력하세요")) return false;
 	}
 	
 	nullToEmpty = function(value){

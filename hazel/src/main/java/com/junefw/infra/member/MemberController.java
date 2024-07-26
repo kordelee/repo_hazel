@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -212,64 +213,64 @@ public class MemberController extends BaseController{
 	}
 
 
-	@ResponseBody
-	@RequestMapping(value = "signinXdmProc")
-	public Map<String, Object> signinXdmProc(MemberDto dto, HttpSession httpSession) throws Exception {
-		Map<String, Object> returnMap = new HashMap<String, Object>();
-
-		MemberDto rtMember = service.selectOneId(dto);
-
-		if (rtMember != null) {
-//			dto.setIfmmPassword(UtilSecurity.encryptSha256(dto.getIfmmPassword()));
-			MemberDto rtMember2 = service.selectOneLogin(dto);
-
-			if (rtMember2 != null) {
-				
-				if(dto.getAutoLogin() == true) {
-					UtilCookie.createCookie(
-							Constants.COOKIE_SEQ_NAME_XDM, 
-							rtMember2.getIfmmSeq(), 
-							Constants.COOKIE_DOMAIN_XDM, 
-							Constants.COOKIE_PATH_XDM, 
-							Constants.COOKIE_MAXAGE_XDM);
-				} else {
-					// by pass
-				}
-
-				httpSession.setMaxInactiveInterval(60 * Constants.SESSION_MINUTE_XDM); // 60second * 30 = 30minute
-				httpSession.setAttribute("sessSeqXdm", rtMember2.getIfmmSeq());
-				httpSession.setAttribute("sessIdXdm", rtMember2.getIfmmId());
-				httpSession.setAttribute("sessNameXdm", rtMember2.getIfmmName());
-
-				rtMember2.setIfmmSocialLoginCd(103);
-				rtMember2.setIflgResultNy(1);
-				service.insertLogLogin(rtMember2);
-
-//				Date date = rtMember2.getIfmmPwdModDate();
-//				LocalDateTime ifmmPwdModDateLocalDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+//	@ResponseBody
+//	@RequestMapping(value = "signinXdmProc")
+//	public Map<String, Object> signinXdmProc(MemberDto dto, HttpSession httpSession) throws Exception {
+//		Map<String, Object> returnMap = new HashMap<String, Object>();
 //
-//				if (ChronoUnit.DAYS.between(ifmmPwdModDateLocalDateTime, UtilDateTime.nowLocalDateTime()) > Constants.PASSWOPRD_CHANGE_INTERVAL) {
-//					returnMap.put("changePwd", "true");
+//		MemberDto rtMember = service.selectOneId(dto);
+//
+//		if (rtMember != null) {
+////			dto.setIfmmPassword(UtilSecurity.encryptSha256(dto.getIfmmPassword()));
+//			MemberDto rtMember2 = service.selectOneLogin(dto);
+//
+//			if (rtMember2 != null) {
+//				
+//				if(dto.getAutoLogin() == true) {
+//					UtilCookie.createCookie(
+//							Constants.COOKIE_SEQ_NAME_XDM, 
+//							rtMember2.getIfmmSeq(), 
+//							Constants.COOKIE_DOMAIN_XDM, 
+//							Constants.COOKIE_PATH_XDM, 
+//							Constants.COOKIE_MAXAGE_XDM);
+//				} else {
+//					// by pass
 //				}
-
-				returnMap.put("rt", "success");
-			} else {
-				dto.setIfmmSocialLoginCd(103);
-				dto.setIfmmSeq(rtMember.getIfmmSeq());
-				dto.setIflgResultNy(0);
-				service.insertLogLogin(dto);
-
-				returnMap.put("rt", "fail");
-			}
-		} else {
-			dto.setIfmmSocialLoginCd(103);
-			dto.setIflgResultNy(0);
-			service.insertLogLogin(dto);
-
-			returnMap.put("rt", "fail");
-		}
-		return returnMap;
-	}
+//
+//				httpSession.setMaxInactiveInterval(60 * Constants.SESSION_MINUTE_XDM); // 60second * 30 = 30minute
+//				httpSession.setAttribute("sessSeqXdm", rtMember2.getIfmmSeq());
+//				httpSession.setAttribute("sessIdXdm", rtMember2.getIfmmId());
+//				httpSession.setAttribute("sessNameXdm", rtMember2.getIfmmName());
+//
+//				rtMember2.setIfmmSocialLoginCd(103);
+//				rtMember2.setIflgResultNy(1);
+//				service.insertLogLogin(rtMember2);
+//
+////				Date date = rtMember2.getIfmmPwdModDate();
+////				LocalDateTime ifmmPwdModDateLocalDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+////
+////				if (ChronoUnit.DAYS.between(ifmmPwdModDateLocalDateTime, UtilDateTime.nowLocalDateTime()) > Constants.PASSWOPRD_CHANGE_INTERVAL) {
+////					returnMap.put("changePwd", "true");
+////				}
+//
+//				returnMap.put("rt", "success");
+//			} else {
+//				dto.setIfmmSocialLoginCd(103);
+//				dto.setIfmmSeq(rtMember.getIfmmSeq());
+//				dto.setIflgResultNy(0);
+//				service.insertLogLogin(dto);
+//
+//				returnMap.put("rt", "fail");
+//			}
+//		} else {
+//			dto.setIfmmSocialLoginCd(103);
+//			dto.setIflgResultNy(0);
+//			service.insertLogLogin(dto);
+//
+//			returnMap.put("rt", "fail");
+//		}
+//		return returnMap;
+//	}
 
 	
 	@RequestMapping(value = "/expiredPwdXdmForm")
@@ -288,6 +289,9 @@ public class MemberController extends BaseController{
 		returnMap.put("rt", "success");
 		return returnMap;
 	}
+	
+//--------------------------------------------	사용자  --------------------------------------------
+	
 	
 	@RequestMapping(value="/findIdUsrForm")
 	public String findIdUsrForm() throws Exception{
@@ -308,9 +312,94 @@ public class MemberController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/signinUsrForm")
-	public String signinUsrForm() throws Exception{
-		
-		return pathCommonUsr + "signinUsrForm";
+	public String signinUsrForm(MemberVo vo,HttpSession httpSession) throws Exception{
+		if(UtilCookie.getValueXdm(Constants.COOKIE_SEQ_NAME_USR) != null) {
+			//	auto login
+			if(httpSession.getAttribute("sessSeqUsr") == null) { 
+				
+				vo.setIfmmSeq(UtilCookie.getValueXdm(Constants.COOKIE_SEQ_NAME_USR));
+				
+				MemberDto rtMember = service.selectOne(vo);
+				
+				httpSession.setMaxInactiveInterval(60 * Constants.SESSION_MINUTE_USR); // 60second * 30 = 30minute
+				httpSession.setAttribute("sessSeqUsr", rtMember.getIfmmSeq());
+				httpSession.setAttribute("sessIdUsr", rtMember.getIfmmId());
+				httpSession.setAttribute("sessNameUsr", rtMember.getIfmmName());
+			} else {
+				//	by pass
+			}
+			return "redirect:/";
+		} else {
+			return pathCommonUsr + "signinUsrForm";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "signinUsrProc")
+	public Map<String, Object> signinXdmProc(MemberDto dto, HttpSession httpSession) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+
+		MemberDto rtMember = service.selectOneId(dto);
+
+		if (rtMember != null) {
+			
+//			dto.setIfmmPassword(UtilSecurity.encryptSha256(dto.getIfmmPassword()));
+			MemberDto rtMember2 = service.selectOneLogin(dto);
+
+			if (rtMember2 != null) {
+				
+//				if(dto.getAutoLogin() == true) {
+//					UtilCookie.createCookie(
+//							Constants.COOKIE_SEQ_NAME_XDM, 
+//							rtMember2.getIfmmSeq(), 
+//							Constants.COOKIE_DOMAIN_XDM, 
+//							Constants.COOKIE_PATH_XDM, 
+//							Constants.COOKIE_MAXAGE_XDM);
+//				} else {
+//					// by pass
+//				}
+
+				httpSession.setMaxInactiveInterval(60 * Constants.SESSION_MINUTE_USR); // 60second * 30 = 30minute
+				httpSession.setAttribute("sessSeqUsr", rtMember2.getIfmmSeq());
+				httpSession.setAttribute("sessIdUsr", rtMember2.getIfmmId());
+				httpSession.setAttribute("sessNameUsr", rtMember2.getIfmmName());
+
+//				rtMember2.setIfmmSocialLoginCd(103);
+//				service.insertLogLogin(rtMember2);
+
+//				Date date = rtMember2.getIfmmPwdModDate();
+//				LocalDateTime ifmmPwdModDateLocalDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+//
+//				if (ChronoUnit.DAYS.between(ifmmPwdModDateLocalDateTime, UtilDateTime.nowLocalDateTime()) > Constants.PASSWOPRD_CHANGE_INTERVAL) {
+//					returnMap.put("changePwd", "true");
+//				}
+				System.out.println("2222222222222222222222222");
+				returnMap.put("rt", "success");
+			} else {
+				dto.setIfmmSocialLoginCd(103);
+				dto.setIfmmSeq(rtMember.getIfmmSeq());
+//				service.insertLogLogin(dto);
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				returnMap.put("rt", "fail");
+			}
+		} else {
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+//			dto.setIfmmSocialLoginCd(103);
+//			service.insertLogLogin(dto);
+
+			returnMap.put("rt", "fail");
+		}
+		return returnMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "signoutUsrProc")
+	public Map<String, Object> signoutUsrProc(HttpSession httpSession) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+//		UtilCookie.deleteCookieUsr();
+		httpSession.invalidate();
+		returnMap.put("rt", "success");
+		return returnMap;
 	}
 	
 	@RequestMapping(value = "/signupUsrForm")
@@ -341,5 +430,24 @@ public class MemberController extends BaseController{
 	public String changePwdUsrForm() throws Exception{
 		
 		return pathCommonUsr + "changePwdUsrForm";
+	}
+	
+	@RequestMapping(value = "/memberUsrInsert")
+	public String memberUsrInsert(MemberDto dto) throws Exception {
+		
+//		dto.setIfmmPwd(encodeBcrypt(dto.getIfmmPwd(), 10));
+		service.insert(dto);
+		
+		return "redirect:/";
+	}
+	
+	public String encodeBcrypt(String planeText, int strength) {
+		  return new BCryptPasswordEncoder(strength).encode(planeText);
+	}
+
+			
+	public boolean matchesBcrypt(String planeText, String hashValue, int strength) {
+	  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(strength);
+	  return passwordEncoder.matches(planeText, hashValue);
 	}
 }

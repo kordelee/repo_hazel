@@ -42,8 +42,10 @@
             </ul>
             <div class="d-grid d-lg-flex align-items-center">
               <div class="nav-item d-flex align-items-center d-none d-lg-block pe-2"></div>
-              <a class="btn btn-link text-900 order-1 order-lg-0 ps-4 me-lg-2" th:href="@{/v1/infra/member/signinUsrForm}">로그인</a>
-              <a class="btn btn-phoenix-primary order-0" th:href="@{/v1/infra/member/signupUsrForm}"><span class="fw-bold">회원가입</span></a>
+              <a th:if="${session.sessNameUsr != null}" class="btn btn-link text-900 order-1 order-lg-0 ps-4 me-lg-2" th:href="@{/v1/infra/member/myPageUsrForm}">[[${session.sessNameUsr}]]</a>
+              <a th:unless="${session.sessNameUsr != null}" class="btn btn-link text-900 order-1 order-lg-0 ps-4 me-lg-2" th:href="@{/v1/infra/member/signinUsrForm}">로그인</a>
+              <a th:if="${session.sessNameUsr != null}" class="btn btn-phoenix-primary order-0"><span class="fw-bold"><button id="btnSignOut">로그아웃</button></span></a>
+              <a th:unless="${session.sessNameUsr != null}" class="btn btn-phoenix-primary order-0" th:href="@{/v1/infra/member/signupUsrForm}"><span class="fw-bold">회원가입</span></a>
             </div>
           </div>
         </nav>
@@ -206,6 +208,31 @@
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
+    
+    <script>
+			if(document.getElementById("btnSignOut")){
+				document.getElementById("btnSignOut").onclick = function () {
+						$.ajax({
+							async: true
+							, cache: false
+							, type: "post"
+							/* ,dataType:"json" */
+							, url: "/v1/infra/member/signoutUsrProc"
+							/* ,data : $("#formLogin").serialize() */
+							, data: {"ifmmName": $("#ifmmName").val(), "ifmmId": $("#ifmmId").val(), "ifmmPwd": $("#ifmmPwd").val()}
+							, success: function (response) {
+								if (response.rt == "success") {
+									location.href = "/";
+								}
+							}
+							, error: function (jqXHR, textStatus, errorThrown) {
+								alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+							}
+						});
+					}
+				}
+		</script>
+		
     <div th:replace="~{usr/v1/infra/include/linkJs :: linkJs}"></div>
 
   </body>

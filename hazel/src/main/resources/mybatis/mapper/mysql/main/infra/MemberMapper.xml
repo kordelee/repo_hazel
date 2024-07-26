@@ -150,6 +150,7 @@
 			,ifmmDob
 			,ifmmPhoneTelecomCd
 			,ifmmPhoneNumber
+			,ifmmDelNy
 			<include refid="Base.insertRegModColumn" />
 		) VALUES (
 			0
@@ -160,9 +161,13 @@
 			,#{ifmmEmail}
 			,#{ifmmGenderCd}
 			,#{ifmmKoreanNy}
-			,#{ifmmDob}
+			<choose>
+				<when test="ifmmDob.equals('')">,NULL</when>  
+				<otherwise>,#{ifmmDob}</otherwise>
+			</choose>
 			,#{ifmmPhoneTelecomCd}
 			,#{ifmmPhoneNumber}
+			,0
 			<include refid="Base.insertRegModValue" />
 		)
 		 <selectKey resultType="String" keyProperty="ifmmSeq" order="AFTER">
@@ -416,25 +421,24 @@
 		SELECT
 			a.ifmmSeq
 			,a.ifmmId
+			,a.ifmmPwd
 		FROM
 			infrMember a
 		WHERE 1=1
 			AND a.ifmmId = #{ifmmId}
 	</select>
 	
-	
 	<select id="selectOneLogin" resultMap="resultMapObj">
 		SELECT
 			a.ifmmSeq
 			,a.ifmmId
 			,a.ifmmName
-			,a.ifmmDesc
 			,a.ifmmPwdModDate
 		FROM
 			infrMember a
 		WHERE 1=1
 			AND a.ifmmId = #{ifmmId}
-			<if test="ifmmPassword != null and !ifmmPassword.equals('')">AND a.ifmmPassword = #{ifmmPassword}</if>
+			<if test="ifmmPwd != null and !ifmmPwd.equals('')">AND a.ifmmPwd = #{ifmmPwd}</if>
 	</select>
 	<!-- login e -->
 	
@@ -549,7 +553,7 @@
 	<update id="updateChangePwd">
 		UPDATE infrMember 
 		SET 
-			ifmmPassword = #{ifmmPassword}
+			ifmmPwd = #{ifmmPwd}
 			,modDateTime = #{modDateTime}
 		WHERE 1=1
 			AND ifmmSeq = #{ifmmSeq}

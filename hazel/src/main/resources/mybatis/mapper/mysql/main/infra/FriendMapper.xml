@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.junefw.csfn.friend.FriendDao">
+
+    <resultMap id="resultMapObj" type="com.junefw.csfn.friend.FriendDto"></resultMap>
+	
+	<!-- infrMember s -->
+	<sql id ="selectCommon">
+	</sql>
+	
+	<select id="searchOne" resultMap="resultMapObj">
+	select
+		ifmmSeq
+		,ifmmName
+		,ifmmId
+	from infrMember
+	where 1=1 
+		AND ifmmSeq not in (
+		   	select
+				a.ifmmFromSeq
+			from csfnFriends a
+				left join infrMember b
+					on a.ifmmToSeq = #{sessSeqUsr}
+					
+			union all
+			
+			select
+		        a.ifmmToSeq
+			from csfnFriends a
+				left join infrMember b
+					on a.ifmmFromSeq = #{sessSeqUsr}
+			    )
+	    AND ifmmName LIKE CONCAT(#{shValue})
+	</select>
+	
+	<select id="myRequestList" resultMap="resultMapObj">
+	select
+    *
+    from 
+    (select
+		a.csfrSeq
+        ,a.ifmmToSeq
+        ,a.ifmmFromSeq
+        ,a.ifmmStatusCd
+        ,b.ifmmName
+        ,b.ifmmSeq
+        ,1 as ref
+	from csfnFriends a
+		left join infrMember b
+			on b.ifmmSeq = a.ifmmToSeq 
+	union all
+	    select
+			a.csfrSeq
+	        ,a.ifmmToSeq
+	        ,a.ifmmFromSeq 
+	        ,a.ifmmStatusCd
+	        ,b.ifmmName
+	        ,b.ifmmSeq
+	        ,2 as ref
+		from csfnFriends a
+			left join infrMember b
+				on b.ifmmSeq = a.ifmmFromSeq
+		) as aaa
+    where 1=1 
+		and aaa.ifmmStatusCd = 117
+        and aaa.ifmmSeq != #{sessSeqUsr}
+        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr}) 
+        and aaa.ref =1
+    ;
+	</select>
+	
+	<select id="myResponseList" resultMap="resultMapObj">
+	select
+    *
+    from 
+    (select
+		a.csfrSeq
+        ,a.ifmmToSeq
+        ,a.ifmmFromSeq
+        ,a.ifmmStatusCd
+        ,b.ifmmName
+        ,b.ifmmSeq
+        ,1 as ref
+	from csfnFriends a
+		left join infrMember b
+			on b.ifmmSeq = a.ifmmToSeq
+	union all
+	    select
+			a.csfrSeq
+	        ,a.ifmmToSeq
+	        ,a.ifmmFromSeq 
+	        ,a.ifmmStatusCd
+	        ,b.ifmmName
+	        ,b.ifmmSeq
+	        ,2 as ref
+		from csfnFriends a
+			left join infrMember b
+				on b.ifmmSeq = a.ifmmFromSeq
+		) as aaa
+    where 1=1 
+		and aaa.ifmmStatusCd = 117
+        and aaa.ifmmSeq != #{sessSeqUsr}
+        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr}) 
+        and aaa.ref =2
+    ;
+	</select>
+	
+	<select id="friendList" resultMap="resultMapObj">
+	select
+    *
+    from 
+	    (select
+			a.csfrSeq
+	        ,a.ifmmToSeq
+	        ,a.ifmmFromSeq
+	        ,a.ifmmStatusCd
+	        ,b.ifmmName
+	        ,b.ifmmSeq
+	        ,1 as ref
+		from csfnFriends a
+			left join infrMember b
+				on b.ifmmSeq = a.ifmmToSeq
+		union all
+	        select
+				a.csfrSeq
+		        ,a.ifmmToSeq
+		        ,a.ifmmFromSeq 
+		        ,a.ifmmStatusCd
+		        ,b.ifmmName
+		        ,b.ifmmSeq
+	        	,2 as ref
+			from csfnFriends a
+				left join infrMember b
+					on b.ifmmSeq = a.ifmmFromSeq
+		) as aaa
+    where 1=1 
+		and aaa.ifmmStatusCd = 119
+        and aaa.ifmmSeq != #{sessSeqUsr}
+        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr}) 
+    ;
+	</select>
+	
+	<insert id="requestInsert">
+		INSERT INTO csfnFriends (
+			ifmmToSeq
+			,ifmmStatusCd
+			,ifmmFromSeq
+			,ifmmToDateTime
+			,csfrDelNy
+			<include refid="Base.insertRegModColumn" />
+		) VALUES (
+			#{ifmmToSeq}
+			,117
+			,#{ifmmFromSeq}
+			,now()
+			,0
+			<include refid="Base.insertRegModValue" />
+		)
+		 <selectKey resultType="String" keyProperty="ifmmSeq" order="AFTER">
+			SELECT last_insert_id()
+		 </selectKey>
+	</insert>	
+	
+<!-- 	친구삭제 -->
+	<update id="friendUelete">
+		UPDATE csfnFriends
+		SET
+			ifmmStatusCd = 120
+		WHERE 1=1
+			AND ifmmStatusCd = 119
+	</update>
+	
+<!-- 	요청취소 -->
+	<update id="requestUelete">
+		UPDATE csfnFriends
+		SET
+			ifmmStatusCd = 121
+		WHERE 1=1
+            AND ifmmStatusCd = 117
+            AND ifmmToSeq = #{ifmmToSeq}
+            AND ifmmFromSeq = #{sessSeqUsr}
+	</update>
+	
+<!-- 	친구수락 -->
+	<update id="updateAccept">
+		UPDATE csfnFriends
+		SET
+			ifmmStatusCd = 119
+		WHERE 1=1
+            AND ifmmStatusCd = 117
+            AND ifmmToSeq = #{sessSeqUsr}
+            AND ifmmFromSeq = #{ifmmFromSeq}
+	</update>
+	
+<!-- 	친구거절 -->
+	<update id="updateRefuse">
+		UPDATE csfnFriends
+		SET
+			ifmmStatusCd = 118
+		WHERE 1=1
+            AND ifmmStatusCd = 117
+            AND ifmmToSeq = #{sessSeqUsr}
+            AND ifmmFromSeq = #{ifmmFromSeq}
+	</update>
+	
+</mapper>

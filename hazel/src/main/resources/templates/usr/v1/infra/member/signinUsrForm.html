@@ -27,13 +27,15 @@
             <div class="mb-3 text-start">
               <label class="form-label" for="email">아이디</label>
               <div class="form-icon-container">
-                <input class="form-control form-icon-input" id="email" type="email" placeholder="name@example.com" /><span class="fas fa-user text-900 fs--1 form-icon"></span>
+                <input class="form-control form-icon-input" id="ifmmId" name="ifmmId" type="text" value="xdmin" placeholder="name@example.com" /><span class="fas fa-user text-900 fs--1 form-icon"></span>
+                <div class="invalid-feedback" id="ifmmIdFeedback"></div>
               </div>
             </div>
             <div class="mb-3 text-start">
               <label class="form-label" for="password">비밀번호</label>
               <div class="form-icon-container">
-                <input class="form-control form-icon-input" id="password" type="password" placeholder="Password" /><span class="fas fa-key text-900 fs--1 form-icon"></span>
+                <input class="form-control form-icon-input" id="ifmmPwd" name="ifmmPwd" type="password" value="1" placeholder="Password" /><span class="fas fa-key text-900 fs--1 form-icon"></span>
+                <div class="invalid-feedback" id="ifmmPwdFeedback"></div>
               </div>
             </div>
             <div class="row flex-between-center mb-7">
@@ -45,7 +47,7 @@
               </div>
               <div class="col-auto"><a class="fs--1 fw-semi-bold" th:href="@{/v1/infra/member/findPwdUsrForm}">아이디/비밀번호 찾기</a></div>
             </div>
-            <button class="btn btn-primary w-100 mb-3">로그인</button>
+            <button id="btnSignIn" class="btn btn-primary w-100 mb-3">로그인</button>
             <div class="text-center"><a class="fs--1 fw-bold" th:href="@{/v1/infra/member/signupUsrForm}">회원가입</a></div>
           </div>
         </div>
@@ -59,6 +61,45 @@
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
+    
+    <script>
+		validation = function() {
+		if(!checkNull('ifmmId', 2, "ID를 입력해 주세요.")) return false;
+		if(!checkNull('ifmmPwd', 2, "비밀번호를 입력해 주세요.")) return false;
+	}
+
+	document.getElementById("btnSignIn").onclick = function () {
+		
+		if(validation() == false) return false;
+	
+		$.ajax({
+			async: true 
+			,cache: false
+			,type: "post"
+			/* ,dataType:"json" */
+			,url: "/v1/infra/member/signinUsrProc"
+			/* ,data : $("#formLogin").serialize() */
+			,data : { "ifmmId" : $("#ifmmId").val(), "ifmmPwd" : $("#ifmmPwd").val()}
+			,success: function(response) {
+				if(response.rt == "success") {
+					if(response.changePwd == "true") {
+						//location.href = "/v1/infra/member/expiredPwdUsrForm";
+					} else {
+						location.href = "/v1/infra/index/indexUsrView";
+					}
+				} else {
+			 	//	document.getElementById("modalAlertTitle").innerText = "확 인";
+			 	//	document.getElementById("modalAlertBody").innerText = "일치하는 회원이 존재 하지 않습니다!";
+			 		alert("일치하는 회원이 존재 하지 않습니다");
+				}
+			}
+			,error : function(jqXHR, textStatus, errorThrown){
+				alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+			}
+		});
+	}
+	</script>
+		
     <div th:replace="~{usr/v1/infra/include/linkJs :: linkJs}"></div>
 
   </body>

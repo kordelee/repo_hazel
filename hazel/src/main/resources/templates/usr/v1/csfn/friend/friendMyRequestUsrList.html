@@ -11,7 +11,6 @@
     <main class="main" id="top">
 	  <div th:replace="~{usr/v1/infra/include/leftMenu :: leftMenu}"></div>          
       <div th:replace="~{usr/v1/infra/include/top :: top}"></div>
-      
       <div class="content">
         <div class="mb-9">
           <div class="row g-3 mb-4">
@@ -57,41 +56,35 @@
                 </div>
               </div>
             </div>
-            <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
-              <div class="table-responsive mx-n1 px-1">
-                <table class="table table-sm fs--1 mb-0">
+            <form method="post" id="formList" name="formList">
+            <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 top-1">
+              <div class="mx-n1 px-1">
+                <table id="eventTable" class="table table-sm fs--1 mb-0">
                   <thead>
                     <tr>
                       <th class="white-space-nowrap fs--1 align-middle ps-0" style="width:26px;">
                         <div class="form-check mb-0 fs-0">
                         </div>
                       </th>
-                      <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
-                      <!-- <th class="sort align-middle text-end" scope="col" data-sort="total" style="width:6%;">TOTAL</th> -->
-                      <th class="sort align-middle ps-8" scope="col" >CUSTOMER</th>
+                      <th class="sort align-middle ps-8" scope="col" >이름</th>
                       <th class="sort align-middle pe-3" scope="col" ></th>
                       <th class="sort align-middle text-start pe-3" scope="col" ></th>
-                      <!-- <th class="sort align-middle text-start" scope="col" data-sort="delivery_type" style="width:30%;">DELIVERY TYPE</th> -->
-                      <!-- <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">DATE</th> -->
                     </tr>
                   </thead>
-                  <tbody class="list" id="order-table-body">
-                    <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                  <tbody >
+                    <tr th:if="${!#lists.isEmpty(list)}" th:each="list,start : ${list}" th:id="tr_+${start.index}" name="ifmmToSeq" th:value="${list.ifmmToSeq}">
+					  <input type="hidden" name="ifmmToSeq" id="ifmmToSeq" th:value="${list.ifmmToSeq}">
                       <td class="fs--1 align-middle px-0 py-3">
                         <div class="form-check mb-0 fs-0">
                         </div>
                       </td>
-                      <!-- <td class="order align-middle white-space-nowrap py-0"><a class="fw-semi-bold" href="#!">#2453</a></td> -->
-                      <!-- <td class="total align-middle text-end fw-semi-bold text-1000">$87</td> -->
                       <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-900" href="../../../apps/e-commerce/landing/profile.html">
-                          <div class="avatar avatar-m"><img class="rounded-circle" src="/usr/v1/template/phoenix-v1.13.0/assets/img/team/32.webp" alt="" />
-                          </div>
-                          <h6 class="mb-0 ms-3 text-900">Carry Anna</h6>
-                        </a></td>
-                      <td class="payment_status align-middle white-space-nowrap text-end fw-bold text-700"><span class="badge badge-phoenix fs--2 badge-phoenix-success"><span class="badge-label"></span><span class="ms-1" data-feather="check" style="height:12.8px;width:12.8px;"></span></span></td>
-                      <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-700"><span class="badge badge-phoenix fs--2 badge-phoenix-secondary"><span class="badge-label"></span><span class="ms-1" data-feather="x" style="height:12.8px;width:12.8px;"></span></span></td>
-                      <!-- <td class="delivery_type align-middle white-space-nowrap text-900 fs--1 text-start">Cash on delivery</td> -->
-                      <!-- <td class="date align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">Dec 12, 12:56 PM</td> -->
+                          <div class="avatar avatar-m"><img class="rounded-circle" src="/usr/v1/template/phoenix-v1.13.0/assets/img/team/32.webp" alt="" /></div>
+                          <h6 th:text="${list.ifmmName}" class="mb-0 ms-3 text-900"></h6>
+                        </a>
+                      </td>
+                      <td class="payment_status align-middle white-space-nowrap text-end fw-bold text-700"></td>
+					  <td name="ifmmToSeq" class="align-middle text-start fw-bold text-700"><span class="badge badge-phoenix fs--2 badge-phoenix-secondary"><span class="badge-label" style="height:14px;width:30px;"><button th:id="btn_+${start.index}" th:value="${start.index}" type="button">요청취소</button></span><span class="ms-1" data-feather="" style="height:12.8px;width:12.8px;"></span></span></td>                      <!-- <td class="delivery_type align-middle white-space-nowrap text-900 fs--1 text-start">Cash on delivery</td> -->
                     </tr>
                   </tbody>
                 </table>
@@ -104,6 +97,7 @@
                 </div>
               </div>
             </div>
+            </form>
           </div>
         </div>
         <footer class="footer position-absolute">
@@ -126,6 +120,42 @@
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
+    
+	<script>
+		/*startsWith = 해당 문자열로 시작하는 아이디 타겟*/
+      document.addEventListener('click', function(event) {
+		  if (event.target.id.startsWith('btn_')) {
+			  let btnVal = event.target.value;
+			  let btnTr = document.getElementById("tr_" + btnVal);
+			 let ifmmToSeq = btnTr.querySelector("#ifmmToSeq").value;
+			 btnTr.remove();
+			 
+			 $.ajax({
+				async: true 
+				,cache: false
+				,type: "post"
+				/* ,dataType:"json" */
+				,url: "/v1/csfn/friend/friendMyRequestUsrUelete"
+				/* ,data : $("#formLogin").serialize() */
+				,data : {ifmmToSeq}
+				,success: function(response) {
+					if(response.rt == "success") {
+						//by pass
+					} 
+				}
+				,error : function(jqXHR, textStatus, errorThrown){
+					alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+				}
+			});
+		  }
+		  
+		});
+	</script>
+	
+	<script>
+		
+	</script>
+	
     <div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
 
   </body>

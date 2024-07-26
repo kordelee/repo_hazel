@@ -23,6 +23,7 @@ public class IndexController extends BaseController{
 
 	@RequestMapping(value = {"/v1/infra/index/indexUsrView", "/"})
 	public String indexUsrView(HttpSession httpSession) throws Exception{
+		
     	return pathCommonUsr + "indexUsrView";
     }
     

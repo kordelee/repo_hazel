@@ -49,7 +49,7 @@ public class MemberService extends BaseService{
     	
     	setRegMod(dto);
     	
-    	dto.setIfmmPassword(UtilSecurity.encryptSha256(dto.getIfmmPassword()));
+    	dto.setIfmmPwd(UtilSecurity.encryptSha256(dto.getIfmmPwd()));
     	dto.setIfmmPwdModDate(UtilDateTime.nowDate());
     	
     	System.out.println("dto.getIfmmPwdModDate(): " + dto.getIfmmPwdModDate());
@@ -58,25 +58,25 @@ public class MemberService extends BaseService{
     	
 //    	uploadFiles(dto.getUploadImgProfile(), dto, "infrMemberUploaded", dto.getUploadImgProfileType(), dto.getUploadImgProfileMaxNumber(), dto.getIfmmSeq(), dao);
 //    	uploadFiles(dto.getUploadImg(), dto, "infrMemberUploaded", dto.getUploadImgType(), dto.getUploadImgMaxNumber(), dto.getIfmmSeq(), dao);
-    	uploadFilesToS3(dto.getUploadImg(), dto, "infrMemberUploaded", dto.getUploadImgType(), dto.getUploadImgMaxNumber(), dto.getIfmmSeq(), dao, amazonS3Client);
+//    	uploadFilesToS3(dto.getUploadImg(), dto, "infrMemberUploaded", dto.getUploadImgType(), dto.getUploadImgMaxNumber(), dto.getIfmmSeq(), dao, amazonS3Client);
 //    	uploadFiles(dto.getUploadFile(), dto, "infrMemberUploaded", dto.getUploadFileType(), dto.getUploadFileMaxNumber(), dto.getIfmmSeq(), dao);
 	
-    	dto.setIfmeDefaultNy(1);
-    	dto.setIfmeTypeCd(44);
+//    	dto.setIfmeDefaultNy(1);
+//    	dto.setIfmeTypeCd(44);
+//    	
+//    	dao.insertEmail(dto);    	
+//    	
+//    	dto.setIfmpDefaultNy(1);
+//    	dto.setIfmpTypeCd(54);
+//    	dto.setIfmpDeviceCd(58);
+//    	
+//    	dao.insertPhone(dto);
+//    	
+//    	dto.setIfmaDefaultNy(1);
+//    	dto.setIfmaTypeCd(78);
+//    	dto.setIfmaTitle("Personal");
     	
-    	dao.insertEmail(dto);    	
-    	
-    	dto.setIfmpDefaultNy(1);
-    	dto.setIfmpTypeCd(54);
-    	dto.setIfmpDeviceCd(58);
-    	
-    	dao.insertPhone(dto);
-    	
-    	dto.setIfmaDefaultNy(1);
-    	dto.setIfmaTypeCd(78);
-    	dto.setIfmaTitle("Personal");
-    	
-    	dao.insertAddress(dto);
+//    	dao.insertAddress(dto);
     	
 //    	// infrMemberEmail
 //		for(int i = 0 ; i < dto.getIfmeEmailFullArray().length ; i++) {
@@ -173,4 +173,5 @@ public class MemberService extends BaseService{
 		dto.setIfmmPwdModDate(UtilDateTime.calculateDayDate(UtilDateTime.nowLocalDateTime(), (int) Constants.PASSWOPRD_CHANGE_INTERVAL));
 		return dao.updateIfmmPwdModDate(dto);
 	}
+	
 }

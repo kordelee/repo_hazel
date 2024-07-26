@@ -33,22 +33,21 @@
                 <div class="col-auto scrollbar overflow-hidden-y flex-grow-1">                 
                 </div>
                 <!-- 친구 추가 모달 -->
-                <div class="col-auto">
+                <div id="btnFriendAdd" class="col-auto">
                   <button class="btn btn-primary" style="margin-left: -150px;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">친구 추가</button>
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">친구 추가</h5>
-                            <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs--1"></span></button>
                           </div>
                           <div class="modal-body">
                             
-                            <input class="form-control" type="text">
+                            <input class="form-control" id="ifmmId" name="ifmmId" type="text">
                             
                           </div>
                           <div class="modal-footer">
-                            <button class="btn btn-primary" type="button" data-bs-dismiss="modal">확인</button>
+                            <button class="btn btn-primary" id="searchId" type="button" data-bs-dismiss="modal">확인</button>
                             <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">취소</button>
                           </div>
                         </div>
@@ -75,7 +74,8 @@
                     </tr>
                   </thead>
                   <tbody class="list" id="order-table-body">
-                    <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                    <tr th:if="${!#lists.isEmpty(list)}" th:each="list,start : ${list}" th:id="tr_+${start.index}" class="hover-actions-trigger btn-reveal-trigger position-static">
+					  <input type="hidden" name="ifmmFromSeq" id="ifmmFromSeq" th:value="${list.ifmmFromSeq}">
                       <td class="fs--1 align-middle px-0 py-3">
                         <div class="form-check mb-0 fs-0">
                         </div>
@@ -85,9 +85,9 @@
                       <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-900" href="../../../apps/e-commerce/landing/profile.html">
                           <div class="avatar avatar-m"><img class="rounded-circle" src="/usr/v1/template/phoenix-v1.13.0/assets/img/team/32.webp" alt="" />
                           </div>
-                          <h6 class="mb-0 ms-3 text-900">Carry Anna</h6>
+                          <h6 th:text="${list.ifmmName}" class="mb-0 ms-3 text-900"></h6>
                         </a></td>
-                      <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-700"><span class="badge badge-phoenix fs--2 badge-phoenix-secondary"><span class="badge-label" style="height:14px;width:30px;">친구삭제</span><span class="ms-1" data-feather="" style="height:12.8px;width:12.8px;"></span></span></td>
+                      <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-700"><span class="badge badge-phoenix fs--2 badge-phoenix-secondary"><span class="badge-label" style="height:14px;width:30px;"><button th:id="btnDel_+${start.index}" th:value="${start.index}" type="button">친구삭제</button></span><span class="ms-1" data-feather="" style="height:12.8px;width:12.8px;"></span></span></td>
                       <!-- <td class="delivery_type align-middle white-space-nowrap text-900 fs--1 text-start">Cash on delivery</td> -->
                       <!-- <td class="date align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">Dec 12, 12:56 PM</td> -->
                     </tr>
@@ -124,6 +124,63 @@
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
+    
+    
+	<!--친구 검색-->
+	<script>
+		document.getElementById("searchId").onclick = function () {
+		
+		$.ajax({
+			async: true 
+			,cache: false
+			,type: "post"
+			/* ,dataType:"json" */
+			/* ,url: "/v1/infra/member/signinUsrProc" */
+			/* ,data : $("#formLogin").serialize() */
+			,data : { "ifmmId" : $("#ifmmId").val()}
+			,success: function(response) {
+				if(response.rt == "success") {
+					console.log(ifmmId);
+				} 
+			}
+			,error : function(jqXHR, textStatus, errorThrown){
+				alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+			}
+		});
+	}
+	</script>
+	
+	<!--친구 삭제-->
+	<script>
+      document.addEventListener('click', function(event) {
+		  if (event.target.id.startsWith('btnDel_')) {
+			  let btnVal = event.target.value;
+			  let btnTr = document.getElementById("tr_" + btnVal);
+			 let ifmmToSeq = btnTr.querySelector("#ifmmToSeq").value;
+			 btnTr.remove();
+			 
+			 $.ajax({
+				async: true 
+				,cache: false
+				,type: "post"
+				/* ,dataType:"json" */
+				,url: "/v1/csfn/friend/friendMyRequestUsrUelete"
+				/* ,data : $("#formLogin").serialize() */
+				,data : {ifmmToSeq}
+				,success: function(response) {
+					if(response.rt == "success") {
+						//by pass
+					} 
+				}
+				,error : function(jqXHR, textStatus, errorThrown){
+					alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+				}
+			});
+		  }
+		  
+		});
+	</script>
+	
     <div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
 
   </body>
