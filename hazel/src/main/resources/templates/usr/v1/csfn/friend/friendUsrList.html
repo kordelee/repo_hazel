@@ -24,16 +24,22 @@
               <div class="row g-3">
                 <div class="col-auto">
                   <div class="search-box">
-                    <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
-                      <input class="form-control search-input search" type="search" placeholder="Search orders" aria-label="Search" />
-                      <span class="fas fa-search search-box-icon"></span>
+					  <form id="form" name="form" class="position-relative" data-bs-toggle="search" method="post" data-bs-display="static">
+						<div class="row">
+							<div class="col-8"> 
+		                      <input class="form-control search-input search" type="search" id="shValue" name="shValue" placeholder="Search orders" aria-label="Search" />
+		                      <span class="fas fa-search search-box-icon"></span>
+		                     </div>
+		                      <div class="invalid-feedback" id="shValueFeedback"></div>
+		                     <div class="col-4">
+			                 	 <button class="btn btn-primary" id="search" type="button" >검색</button>
+			                 </div>
+		                 </div>
                     </form>
                   </div>
                 </div>
-                <div class="col-auto scrollbar overflow-hidden-y flex-grow-1">                 
-                </div>
                 <!-- 친구 추가 모달 -->
-                <div id="btnFriendAdd" class="col-auto">
+                <!--<div id="btnFriendAdd" class="col-auto">
                   <button class="btn btn-primary" style="margin-left: -150px;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">친구 추가</button>
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
                       <div class="modal-dialog">
@@ -53,7 +59,7 @@
                         </div>
                       </div>
                     </div>           
-                </div>
+                </div>-->
               </div>
             </div>
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
@@ -65,31 +71,32 @@
                         <div class="form-check mb-0 fs-0">
                         </div>
                       </th>
-                      <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
-                      <!-- <th class="sort align-middle text-end" scope="col" data-sort="total" style="width:6%;">TOTAL</th> -->
-                      <th class="sort align-middle ps-8" scope="col" >CUSTOMER</th>
+                      <th class="sort align-middle ps-8" scope="col" >아이디(이름)</th>
                       <th class="sort align-middle text-start pe-3" scope="col" ></th>
-                      <!-- <th class="sort align-middle text-start" scope="col" data-sort="delivery_type" style="width:30%;">DELIVERY TYPE</th> -->
-                      <!-- <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">DATE</th> -->
                     </tr>
                   </thead>
                   <tbody class="list" id="order-table-body">
+					<tr th:if="${#lists.isEmpty(list)}" class="hover-actions-trigger btn-reveal-trigger position-static">
+	                      <td class="fs--1 align-middle px-0 py-3">
+	                        <div class="form-check mb-0 fs-0">
+	                        </div>
+	                      </td>
+	                      <td colspan="4" class="fs--1 align-middle px-0 py-3">
+	                          <h6 class="mb-0 ms-3 text-900">친구를 추가해주세요!</h6>
+	                        </td>
+	                    </tr>
                     <tr th:if="${!#lists.isEmpty(list)}" th:each="list,start : ${list}" th:id="tr_+${start.index}" class="hover-actions-trigger btn-reveal-trigger position-static">
-					  <input type="hidden" name="ifmmFromSeq" id="ifmmFromSeq" th:value="${list.ifmmFromSeq}">
+					  <input type="hidden" name="ifmmSeq" id="ifmmSeq" th:value="${list.ifmmSeq}">
                       <td class="fs--1 align-middle px-0 py-3">
                         <div class="form-check mb-0 fs-0">
                         </div>
                       </td>
-                      <!-- <td class="order align-middle white-space-nowrap py-0"><a class="fw-semi-bold" href="#!">#2453</a></td> -->
-                      <!-- <td class="total align-middle text-end fw-semi-bold text-1000">$87</td> -->
                       <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-900" href="../../../apps/e-commerce/landing/profile.html">
                           <div class="avatar avatar-m"><img class="rounded-circle" src="/usr/v1/template/phoenix-v1.13.0/assets/img/team/32.webp" alt="" />
                           </div>
-                          <h6 th:text="${list.ifmmName}" class="mb-0 ms-3 text-900"></h6>
+                          <h6 th:text="${list.ifmmId}" class="mb-0 ms-3 text-900"></h6>&nbsp;(<h6 th:text="${list.ifmmName}" class="mb-0 text-900"></h6>)
                         </a></td>
                       <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-700"><span class="badge badge-phoenix fs--2 badge-phoenix-secondary"><span class="badge-label" style="height:14px;width:30px;"><button th:id="btnDel_+${start.index}" th:value="${start.index}" type="button">친구삭제</button></span><span class="ms-1" data-feather="" style="height:12.8px;width:12.8px;"></span></span></td>
-                      <!-- <td class="delivery_type align-middle white-space-nowrap text-900 fs--1 text-start">Cash on delivery</td> -->
-                      <!-- <td class="date align-middle white-space-nowrap text-700 fs--1 ps-4 text-end">Dec 12, 12:56 PM</td> -->
                     </tr>
                   </tbody>
                 </table>
@@ -156,7 +163,7 @@
 		  if (event.target.id.startsWith('btnDel_')) {
 			  let btnVal = event.target.value;
 			  let btnTr = document.getElementById("tr_" + btnVal);
-			 let ifmmToSeq = btnTr.querySelector("#ifmmToSeq").value;
+			 let ifmmSeq = btnTr.querySelector("#ifmmSeq").value;
 			 btnTr.remove();
 			 
 			 $.ajax({
@@ -164,9 +171,9 @@
 				,cache: false
 				,type: "post"
 				/* ,dataType:"json" */
-				,url: "/v1/csfn/friend/friendMyRequestUsrUelete"
+				,url: "/v1/csfn/friend/friendUsrUelete"
 				/* ,data : $("#formLogin").serialize() */
-				,data : {ifmmToSeq}
+				,data : {ifmmSeq}
 				,success: function(response) {
 					if(response.rt == "success") {
 						//by pass

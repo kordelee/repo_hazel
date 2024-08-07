@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+  <div th:replace="~{usr/v1/infra/include/headFull :: headFull}"></div>
+
+  <body>
+
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+	  <div th:replace="~{usr/v1/infra/include/leftMenu :: leftMenu}"></div>          
+      <div th:replace="~{usr/v1/infra/include/top :: top}"></div>
+      
+      <div class="content">
+		  <div class="row g-3 mb-4">
+            <div class="col-auto">
+              <h2 class="mb-0">그룹추가</h2>
+            </div>
+          </div>
+		  <div class="mb-4">
+              <div class="row g-3">
+                <div class="col-auto scrollbar overflow-hidden-y flex-grow-1">                 
+                </div>
+                <div class="col-auto">
+                  <div class="search-box">
+                    <form id="form" name="form" class="position-relative">
+						<div class="row">
+							<div class="col-8"> 
+		                      <input class="form-control search-input search" type="search" id="shValue" name="shValue" placeholder="Search orders" aria-label="Search" />
+		                      <span class="fas fa-search search-box-icon"></span>
+		                     </div>
+		                      <div class="invalid-feedback" id="shValueFeedback"></div>
+		                     <div class="col-4">
+			                 	 <button class="btn btn-primary" name="search" id="search" type="button" >검색</button>
+			                 </div>
+		                 </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+         <form id="formList" name="formList">
+			<input type="hidden" id="csgrSeq" name="csgrSeq" th:value="${item.csgrSeq}"> 
+		  <div class="row g-5">
+            <div class="col-12 col-lg-4">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-between-center mb-3">
+                    <h4 class="card-title mb-0">그룹이름</h4>
+                    <!--<a class="btn btn-link p-0" href="#!">Edit cart </a>-->
+                  </div>
+                  <div class="input-group mb-3">
+                    <input class="form-control" id="csgrName" name="csgrName" type="text" th:value="${item.csgrName}" />
+                  </div>
+                  <select class="form-select mb-3" aria-label="delivery type">
+                    <option value="">카테고리를 선택하주세요</option>
+                    <option value="card">Card</option>
+                    <option value="paypal">Paypal</option>
+                  </select>
+                  <button class="btn btn-primary w-100">이름 변경<span class="fas fa-chevron-right ms-1 fs--2"></span></button>
+                  <div class="d-flex flex-between-center mb-4">
+                    <h4 class="card-title mt-4 mb-0">그룹에 추가된 친구</h4>
+                  </div>
+                  <div id="friendList">
+				  </div>
+                 <!-- <ul id="addedFriendsList" class="list-group mb-3">
+                	</ul>-->
+                </div>
+              </div>
+            </div>
+            <!--Ajax Lita-->
+            <div class="col-12 col-lg-8">
+				<div id="cartTable" data-list='{"valueNames":["products","color","size","price","quantity","total"],"page":10}'>
+                <div class="table-responsive scrollbar mx-n1 px-1">
+                  <table class="table fs--1 mb-0 border-top border-200">
+					  <thead>
+                    <tr>
+                      <th class="white-space-nowrap fs--1 align-middle ps-0" style="width:26px;">
+                        <div class="form-check mb-0 fs-0">
+                        </div>
+                      </th>
+                      <th class="sort align-middle ps-8" scope="col" >아이디(이름)
+						  <button type="button" id="btnReset"
+											class="btn btn-outline-secondary btn-sm btn_custom"><i
+												class="fa-solid fa-rotate-right fa-lg"></i></button>
+					  </th>
+                      <th class="sort align-middle text-start pe-3" scope="col" ></th>
+                    </tr>
+                  </thead>
+                  <tbody class="list" id="lita">
+					<tr th:if="${#lists.isEmpty(list)}" class="hover-actions-trigger btn-reveal-trigger position-static">
+	                      <td class="fs--1 align-middle px-0 py-3">
+	                        <div class="form-check mb-0 fs-0">
+	                        </div>
+	                      </td>
+	                      <td colspan="4" class="fs--1 align-middle px-0 py-3">
+	                          <h6 class="mb-0 ms-3 text-900">친구를 추가해주세요!</h6>
+	                        </td>
+	                    </tr>
+                    <tr th:if="${!#lists.isEmpty(list)}" th:each="list,start : ${list}" th:id="tr_+${start.index}" class="hover-actions-trigger btn-reveal-trigger position-static">
+					  <input type="hidden" name="ifmmSeq" id="ifmmSeq" th:value="${list.ifmmSeq}">
+                      <td class="fs--1 align-middle px-0 py-3">
+                        <div class="form-check mb-0 fs-0">
+                        </div>
+                      </td>
+                      <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-900" href="../../../apps/e-commerce/landing/profile.html">
+                          <div class="avatar avatar-m"><img class="rounded-circle" src="/usr/v1/template/phoenix-v1.13.0/assets/img/team/32.webp" alt="" />
+                          </div>
+                          <h6 th:each="start : ${start}" th:id="ifmmId_+${start.index}" th:text="${list.ifmmId}" class="mb-0 ms-3 text-900"></h6>&nbsp;(<h6 th:each="start : ${start}" th:id="ifmmName_+${start.index}" th:text="${list.ifmmName}" class="mb-0 text-900"></h6>)</span>
+                        </a></td>
+                      <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-700"><span class="badge badge-phoenix fs--2 badge-phoenix-secondary"><span class="badge-label" style="height:14px;width:30px;"><button th:id="btn_+${start.index}" th:value="${start.index}" type="button">추가</button></span><span class="ms-1" data-feather="" style="height:12.8px;width:12.8px;"></span></span></td>
+                    </tr>
+                  </tbody>
+                  </table>
+                </div>
+              </div>
+			</div>
+            
+          </div>
+        </form>
+        <footer class="footer position-absolute">
+          <div class="row g-0 justify-content-between align-items-center h-100">
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 mt-2 mt-sm-0 text-900">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2023 &copy;<a class="mx-1" href="https://themewagon.com">Themewagon</a></p>
+            </div>
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 text-600">v1.13.0</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+	<!--<script th:inline="javascript">
+	let i=0;
+document.addEventListener('click', function(event) {
+    if (event.target.id.startsWith('btn_')) {
+        let btnVal = event.target.value;
+        let btnTr = document.getElementById("tr_" + btnVal);
+        let ifmmToSeq = btnTr.querySelector("#ifmmSeq").value;
+        let friendName = btnTr.querySelector("#ifmmName_" + btnVal).innerText;
+        let friendId = btnTr.querySelector("#ifmmId_" + btnVal).innerText;
+
+        alert(friendName + friendId);
+
+        btnTr.remove();
+
+        alert(ifmmToSeq);
+        let groupList = document.getElementById("friendList");
+
+        let rowDiv = document.createElement("div");
+        rowDiv.className = "d-flex justify-content-between align-items-center mb-3";
+        rowDiv.id="row_"+i;
+        
+        //let rowId = document.getElementById("row_"+i);
+        
+        let colId = document.createElement("div");
+        colId.className = ""; 
+        
+        let colBtn = document.createElement("div");
+        colBtn.className = ""; 
+        
+        let newListData = document.createElement("h6");
+        newListData.innerText = friendId + '(' + friendName + ')';
+        
+        let newBtnDel = document.createElement("button");
+        newBtnDel.className = "btn btn-sm text-500 hover-text-600 me-2";
+        newBtnDel.innerHTML = `
+            <span class="fas fa-trash"></span>
+        `;
+        newBtnDel.id="btnDel_"+i;
+        alert(newBtnDel.id);
+        /*
+        newBtnDel.id = 'delBtn_' + new Date().getTime(); // 유니크한 ID를 생성합니다.
+        newBtnDel.onclick = function() {
+            alert('삭제 버튼 클릭됨, ID: ' + this.id);
+           	rowDiv.remove(); // 버튼이 포함된 rowDiv를 제거합니다.
+        };
+        */
+
+        colId.appendChild(newListData);
+        colBtn.appendChild(newBtnDel);
+
+        rowDiv.appendChild(colId);
+        rowDiv.appendChild(colBtn);
+
+        groupList.appendChild(rowDiv);
+        
+        i++;
+    }
+});
+</script>-->
+
+    <script src="/usr/vi/js/validationUsr.js"></script>
+    
+    <script>
+		let i=0;
+		document.addEventListener('click', function(event) {
+    		if (event.target.id.startsWith('btn_')) {
+		        let btnVal = event.target.value;
+		        let btnTr = document.getElementById("tr_" + btnVal);
+		        let ifmmSeq = btnTr.querySelector("#ifmmSeq").value;
+		        let friendName = btnTr.querySelector("#ifmmName_" + btnVal).innerText;
+		        let friendId = btnTr.querySelector("#ifmmId_" + btnVal).innerText;
+				
+		        btnTr.remove();
+				
+				let divList = '';
+			        divList += '<div id="rowDiv_' + ifmmSeq + '" class="d-flex justify-content-between align-items-center mb-3">';
+			        divList += '<input type="text" id="ifmmSeq" name="ifmmSeq" value="'+ifmmSeq+'">';
+			        divList += '    <div class="">';
+			        divList += '        <h6 class="mb-0 ms-3 text-900">' + friendId + '&nbsp;(' + friendName + ')</h6>';
+			        divList += '    </div>';
+			        divList += '    <div class="">';
+			        divList += '        <button type="button" class="btn btn-sm text-500 hover-text-600 me-2" onClick="aaa('+ifmmSeq+')" id="btnTrash_' + i + '"><span class="fas fa-trash"></span></button>';
+			        divList += '    </div>';
+			        divList += '</div>';
+					
+					$("#friendList").append(divList);
+					
+					$.ajax({	
+						async: true 
+						,cache: false
+						,type: "post"
+						/* ,dataType:"json" */
+						,url: "/v1/csfn/group/friendUsrAdd"
+						/* ,data : $("#formLogin").serialize() */
+						,data : { ifmmSeq , "csgrSeq" : $("#csgrSeq").val()}
+						,success: function(response) {
+							if(response.rt == "success") {
+								//by pass
+							}
+						}
+						,error : function(jqXHR, textStatus, errorThrown){
+							alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+						}
+					});
+					
+		    }else if(event.target.id.startsWith('btnSAdd')) {
+		        let shTr = document.getElementById("tr-0");
+		        let ifmmSeq = shTr.querySelector("#ifmmSeq").value;
+		        let friendName = shTr.querySelector("#ifmmName").innerText;
+		        let friendId = shTr.querySelector("#ifmmId").innerText;
+				
+		        shTr.remove();
+				
+				let shOne = '';
+			        shOne += '<div id="rowDiv_' + ifmmSeq + '" class="d-flex justify-content-between align-items-center mb-3">';
+			        shOne += '<input type="text" id="ifmmSeq" name="ifmmSeq" value="'+ifmmSeq+'">';
+			        shOne += '    <div class="">';
+			        shOne += '        <h6 class="mb-0 ms-3 text-900">' + friendId + '&nbsp;(' + friendName + ')</h6>';
+			        shOne += '    </div>';
+			        shOne += '    <div class="">';
+			        shOne += '        <button type="button" class="btn btn-sm text-500 hover-text-600 me-2" onClick="aaa('+ifmmSeq+')" id="btnTrash_' + i + '"><span class="fas fa-trash"></span></button>';
+			        shOne += '    </div>';
+			        shOne += '</div>';
+					
+					$("#friendList").append(shOne);
+					
+					$.ajax({	
+						async: true 
+						,cache: false
+						,type: "post"
+						/* ,dataType:"json" */
+						,url: "/v1/csfn/group/friendUsrAdd"
+						/* ,data : $("#formLogin").serialize() */
+						,data : { ifmmSeq , "csgrSeq" : $("#csgrSeq").val()}
+						,success: function(response) {
+							if(response.rt == "success") {
+								//by pass
+							}
+						}
+						,error : function(jqXHR, textStatus, errorThrown){
+							alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+						}
+					});
+					
+			}	 
+			
+			i++;
+			
+		});
+			
+		function aaa(ifmmSeq){
+			document.getElementById('rowDiv_'+ifmmSeq).remove();
+			$.ajax({
+						async: true 
+						,cache: false
+						,type: "post"
+						/* ,dataType:"json" */
+						,url: "/v1/csfn/group/friendUsrUelete"
+						/* ,data : $("#formLogin").serialize() */
+						,data : { ifmmSeq , "csgrSeq" : $("#csgrSeq").val()}
+						,success: function(response) {
+							if(response.rt == "success") {
+								//by pass
+							}
+						}
+						,error : function(jqXHR, textStatus, errorThrown){
+							alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+						}
+					});
+		}
+		
+		document.getElementById("btnReset").onclick = function(){
+			$.ajax({
+					async: true 
+					,cache: false
+					,type: "post"
+					/* ,dataType:"json" */
+					,url: "/v1/csfn/group/groupUsrAdd"
+					/* ,data : $("#formLogin").serialize() */
+					,data : $("#formList").serialize()
+					,success: function(response) {
+						$("#lita").append('<tr class="hover-actions-trigger btn-reveal-trigger position-static">'+response+'</tr>');
+					}
+					,error : function(jqXHR, textStatus, errorThrown){
+						alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+					}
+				});
+		}
+		
+	</script>
+	
+	<!--<script>
+		document.addEventListener('click', function(event){
+			if(event.target.id.startsWith('btnTrash_')) {
+				let btnTrash = event.target.value;
+				alert(btnTrash);
+				let rowDiv = document.getElementById("rowDiv_"+btnTrash);
+			        
+			    $.remove();
+			}
+		});
+	</script>-->
+    
+    <script>
+		
+		document.getElementById("search").onclick = function() {
+		
+		if(validationInst() == false)return false;
+			
+		}
+		
+		function validationInst() {
+			if(validationUpdt() == false) {
+				return false;
+				} else {
+					$.ajax({
+					async: true 
+					,cache: false
+					,type: "post"
+					/* ,dataType:"json" */
+					,url: "/v1/csfn/group/groupUsrAddLita"
+					/* ,data : $("#formLogin").serialize() */
+					,data : { "shValue" : $("#shValue").val()}
+					,success: function(response) {
+						$("#lita").empty();
+						$("#lita").append('<tr class="hover-actions-trigger btn-reveal-trigger position-static">'+response+'</tr>');
+					}
+					,error : function(jqXHR, textStatus, errorThrown){
+						alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+					}
+				});
+				}
+		}
+		
+		//function validationUpdt() {
+		//	alert("name: " + document.getElementById("name").value)
+		//}					
+		
+		function validationUpdt(){
+			if(!checkNull('shValue', 2, "아이디를 입력해주세요")) return false;
+		}
+		
+		nullToEmpty = function(value){
+			if(value == null || value == 'null' || value.length == 0){
+				return false;
+			} else{
+				return true;
+			}
+		}
+	</script>
+	
+    <div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
+
+  </body>
+
+</html>

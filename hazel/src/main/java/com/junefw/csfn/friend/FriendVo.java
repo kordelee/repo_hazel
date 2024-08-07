@@ -9,6 +9,8 @@ public class FriendVo extends BaseVo {
 	private String ifmmId;
 	private String ifmmDob;
 	private String ifmmGenderCd;
+	private String ifmmToSeq;
+	private String ifmmFromSeq;
 	private String sessSeqUsr;
 	public String getIfmmSeq() {
 		return ifmmSeq;
@@ -45,6 +47,18 @@ public class FriendVo extends BaseVo {
 	}
 	public void setSessSeqUsr(String sessSeqUsr) {
 		this.sessSeqUsr = sessSeqUsr;
+	}
+	public String getIfmmToSeq() {
+		return ifmmToSeq;
+	}
+	public void setIfmmToSeq(String ifmmToSeq) {
+		this.ifmmToSeq = ifmmToSeq;
+	}
+	public String getIfmmFromSeq() {
+		return ifmmFromSeq;
+	}
+	public void setIfmmFromSeq(String ifmmFromSeq) {
+		this.ifmmFromSeq = ifmmFromSeq;
 	}
 	
 }

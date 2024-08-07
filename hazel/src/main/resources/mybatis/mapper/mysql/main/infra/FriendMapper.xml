@@ -14,27 +14,84 @@
 	
 	<select id="searchOne" resultMap="resultMapObj">
 	select
-		ifmmSeq
-		,ifmmName
-		,ifmmId
-	from infrMember
+		a.ifmmSeq
+		,a.ifmmName
+		,a.ifmmId
+	from infrMember a
 	where 1=1 
-		AND ifmmSeq not in (
+		AND a.ifmmSeq not in (
 		   	select
-				a.ifmmFromSeq
+    aaa.ifmmSeq
+    from 
+	    (select
+			a.csfrSeq
+	        ,a.ifmmToSeq
+	        ,a.ifmmFromSeq
+	        ,a.ifmmStatusCd
+	        ,b.ifmmName
+	        ,b.ifmmId
+	        ,b.ifmmSeq
+	        ,1 as ref
+		from csfnFriends a
+			left join infrMember b
+				on b.ifmmSeq = a.ifmmToSeq
+		union all
+	        select
+				a.csfrSeq
+		        ,a.ifmmToSeq
+		        ,a.ifmmFromSeq 
+		        ,a.ifmmStatusCd
+		        ,b.ifmmName
+		        ,b.ifmmId
+		        ,b.ifmmSeq
+	        	,2 as ref
 			from csfnFriends a
 				left join infrMember b
-					on a.ifmmToSeq = #{sessSeqUsr}
-					
-			union all
-			
-			select
-		        a.ifmmToSeq
-			from csfnFriends a
-				left join infrMember b
-					on a.ifmmFromSeq = #{sessSeqUsr}
+					on b.ifmmSeq = a.ifmmFromSeq
+		) as aaa
+    where 1=1 
+		and aaa.ifmmStatusCd = 119
+        and aaa.ifmmSeq = #{sessSeqUsr}
+        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr}) 
 			    )
-	    AND ifmmName LIKE CONCAT(#{shValue})
+	    AND ifmmId LIKE CONCAT(#{shValue})
+	</select>
+	
+	<select id="searchMyFriend" resultMap="resultMapObj">
+	select
+    *
+    from 
+	    (select
+			a.csfrSeq
+	        ,a.ifmmToSeq
+	        ,a.ifmmFromSeq
+	        ,a.ifmmStatusCd
+	        ,b.ifmmName
+	        ,b.ifmmSeq
+	        ,b.ifmmId
+	        ,1 as ref
+		from csfnFriends a
+			left join infrMember b
+				on b.ifmmSeq = a.ifmmToSeq
+		union all
+	        select
+				a.csfrSeq
+		        ,a.ifmmToSeq
+		        ,a.ifmmFromSeq 
+		        ,a.ifmmStatusCd
+		        ,b.ifmmName
+		        ,b.ifmmSeq
+		        ,b.ifmmId
+	        	,2 as ref
+			from csfnFriends a
+				left join infrMember b
+					on b.ifmmSeq = a.ifmmFromSeq
+		) as aaa
+    where 1=1 
+		and aaa.ifmmStatusCd = 119
+        and aaa.ifmmSeq != #{sessSeqUsr}
+        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr})
+        AND aaa.ifmmId LIKE CONCAT(#{shValue}) 
 	</select>
 	
 	<select id="myRequestList" resultMap="resultMapObj">
@@ -48,6 +105,7 @@
         ,a.ifmmStatusCd
         ,b.ifmmName
         ,b.ifmmSeq
+        ,b.ifmmId
         ,1 as ref
 	from csfnFriends a
 		left join infrMember b
@@ -60,6 +118,7 @@
 	        ,a.ifmmStatusCd
 	        ,b.ifmmName
 	        ,b.ifmmSeq
+	        ,b.ifmmId
 	        ,2 as ref
 		from csfnFriends a
 			left join infrMember b
@@ -83,6 +142,7 @@
         ,a.ifmmFromSeq
         ,a.ifmmStatusCd
         ,b.ifmmName
+        ,b.ifmmId
         ,b.ifmmSeq
         ,1 as ref
 	from csfnFriends a
@@ -95,6 +155,7 @@
 	        ,a.ifmmFromSeq 
 	        ,a.ifmmStatusCd
 	        ,b.ifmmName
+	        ,b.ifmmId
 	        ,b.ifmmSeq
 	        ,2 as ref
 		from csfnFriends a
@@ -104,7 +165,7 @@
     where 1=1 
 		and aaa.ifmmStatusCd = 117
         and aaa.ifmmSeq != #{sessSeqUsr}
-        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr}) 
+        and aaa.ifmmToSeq = #{sessSeqUsr} 
         and aaa.ref =2
     ;
 	</select>
@@ -119,6 +180,7 @@
 	        ,a.ifmmFromSeq
 	        ,a.ifmmStatusCd
 	        ,b.ifmmName
+	        ,b.ifmmId
 	        ,b.ifmmSeq
 	        ,1 as ref
 		from csfnFriends a
@@ -131,6 +193,7 @@
 		        ,a.ifmmFromSeq 
 		        ,a.ifmmStatusCd
 		        ,b.ifmmName
+		        ,b.ifmmId
 		        ,b.ifmmSeq
 	        	,2 as ref
 			from csfnFriends a
@@ -141,7 +204,6 @@
 		and aaa.ifmmStatusCd = 119
         and aaa.ifmmSeq != #{sessSeqUsr}
         and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr}) 
-    ;
 	</select>
 	
 	<insert id="requestInsert">
@@ -172,6 +234,7 @@
 			ifmmStatusCd = 120
 		WHERE 1=1
 			AND ifmmStatusCd = 119
+			AND (ifmmToSeq = #{sessSeqUsr} or ifmmFromSeq = #{sessSeqUsr} )
 	</update>
 	
 <!-- 	요청취소 -->
@@ -181,8 +244,7 @@
 			ifmmStatusCd = 121
 		WHERE 1=1
             AND ifmmStatusCd = 117
-            AND ifmmToSeq = #{ifmmToSeq}
-            AND ifmmFromSeq = #{sessSeqUsr}
+            AND (ifmmToSeq = #{sessSeqUsr} or ifmmFromSeq = #{sessSeqUsr} )
 	</update>
 	
 <!-- 	친구수락 -->

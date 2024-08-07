@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.junefw.csfn.group.GroupDao">
+
+    <resultMap id="resultMapObj" type="com.junefw.csfn.group.GroupDto"></resultMap>
+	
+	<!-- infrMember s -->
+	<sql id ="selectCommon">
+	</sql>
+	
+	<insert id="groupInsert">
+		INSERT INTO csfnGroup (
+			csgrName
+			,csgrDelNy
+			<include refid="Base.insertRegModColumn" />
+		) VALUES (
+			#{csgrName}
+			,0
+			<include refid="Base.insertRegModValue" />
+		)
+		<selectKey resultType="String" keyProperty="csgrSeq" order="AFTER">
+			SELECT last_insert_id()
+		 </selectKey>
+	</insert>
+	
+	<insert id="mappingInsert">
+		INSERT INTO csfnMemberGroup (
+			csmgBossNy
+			,ifmmSeq
+			,csgrSeq
+			,csmgDelNy
+			<include refid="Base.insertRegModColumn" />
+		) VALUES (
+			1
+			,#{sessSeqUsr}
+			,#{csgrSeq}
+			,0
+			<include refid="Base.insertRegModValue" />
+		)
+	</insert>
+	
+	<select id="selectList" resultMap="resultMapObj">
+		SELECT
+	        a.csgrSeq
+	        ,a.csgrName
+	        ,b.csmgBossNy
+	        ,c.ifmmSeq
+	        ,(SELECT 
+				cc.ifmmName
+				FROM infrMember cc
+	            LEFT JOIN csfnMemberGroup bb
+					ON cc.ifmmSeq = bb.ifmmSeq
+	            WHERE 1=1
+					AND bb.csgrSeq = a.csgrSeq
+					AND bb.csmgBossNy = 1
+				LIMIT 1     
+			) AS bossName
+	        ,(SELECT 
+					COUNT(*)
+				FROM infrMember cc 
+	            LEFT JOIN csfnMemberGroup bb
+					ON cc.ifmmSeq = bb.ifmmSeq
+	            WHERE 1=1 
+					AND bb.csgrSeq = a.csgrSeq
+	            ) AS xCount
+        FROM csfnGroup a
+        LEFT JOIN csfnMemberGroup b
+			ON a.csgrSeq = b.csgrSeq
+        LEFT JOIN infrMember c
+			ON c.ifmmSeq = b.ifmmSeq
+		WHERE 1=1 
+			AND b.ifmmSeq = #{sessSeqUsr}
+	</select>
+	
+	<select id="selectOne" resultMap="resultMapObj">
+		SELECT
+			a.csgrSeq
+			,a.csgrName
+            ,(SELECT 
+				COUNT(*)
+			FROM infrMember cc 
+            LEFT JOIN csfnMemberGroup bb
+				ON cc.ifmmSeq = bb.ifmmSeq
+            WHERE 1=1 
+				AND bb.csgrSeq = #{csgrSeq}
+            ) AS xseqCount
+		FROM csfnGroup a
+		LEFT JOIN csfnMemberGroup b
+			ON a.csgrSeq = b.csgrSeq
+		LEFT JOIN infrMember c
+			ON b.ifmmSeq = c.ifmmSeq
+		WHERE 1=1 
+			AND b.csgrSeq = #{csgrSeq}
+            LIMIT 1
+            ;
+	</select>
+	<insert id="friendAdd">
+		INSERT INTO csfnMemberGroup (
+			csmgBossNy
+			,ifmmSeq
+			,csgrSeq
+			,csmgDelNy
+			<include refid="Base.insertRegModColumn" />
+		) VALUES (
+			0
+			,#{ifmmSeq}
+			,#{csgrSeq}
+			,0
+			<include refid="Base.insertRegModValue" />
+		)
+	</insert>
+	
+	<update id="friendUelete">
+		UPDATE csfnMemberGroup 
+		SET 
+			csmgDelNy = 1
+		WHERE 1=1
+			AND ifmmSeq = #{ifmmSeq}
+			AND csgrSeq = #{csgrSeq}
+	</update>
+	
+	<select id="friendAddList" resultMap="resultMapObj">
+	select
+    *
+    from 
+	    (select
+			a.csfrSeq
+	        ,a.ifmmToSeq
+	        ,a.ifmmFromSeq
+	        ,a.ifmmStatusCd
+	        ,b.ifmmName
+	        ,b.ifmmId
+	        ,b.ifmmSeq
+	        ,1 as ref
+		from csfnFriends a
+			left join infrMember b
+				on b.ifmmSeq = a.ifmmToSeq
+		union all
+	        select
+				a.csfrSeq
+		        ,a.ifmmToSeq
+		        ,a.ifmmFromSeq 
+		        ,a.ifmmStatusCd
+		        ,b.ifmmName
+		        ,b.ifmmId
+		        ,b.ifmmSeq
+	        	,2 as ref
+			from csfnFriends a
+				left join infrMember b
+					on b.ifmmSeq = a.ifmmFromSeq
+		) as aaa 
+    where 1=1 
+		and aaa.ifmmSeq not in (
+	        select
+	        	aa.ifmmSeq
+	        from csfnMemberGroup cc
+				left join infrMember aa
+					on cc.ifmmSeq = aa.ifmmSeq
+			where 1=1 
+			and cc.csmgDelNy =0
+        )
+		and aaa.ifmmStatusCd = 119
+        and aaa.ifmmSeq != #{sessSeqUsr}
+        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr})
+	</select>
+	
+	<select id="friendSearchOne" resultMap="resultMapObj">
+	select
+    aaa.ifmmName
+    ,aaa.ifmmSeq
+    from 
+	    (select
+			a.csfrSeq
+	        ,a.ifmmToSeq
+	        ,a.ifmmFromSeq
+	        ,a.ifmmStatusCd
+	        ,b.ifmmName
+	        ,b.ifmmId
+	        ,b.ifmmSeq
+	        ,1 as ref
+		from csfnFriends a
+			left join infrMember b
+				on b.ifmmSeq = a.ifmmToSeq
+		union all
+	        select
+				a.csfrSeq
+		        ,a.ifmmToSeq
+		        ,a.ifmmFromSeq 
+		        ,a.ifmmStatusCd
+		        ,b.ifmmName
+		        ,b.ifmmId
+		        ,b.ifmmSeq
+	        	,2 as ref
+			from csfnFriends a
+				left join infrMember b
+					on b.ifmmSeq = a.ifmmFromSeq
+		) as aaa 
+    where 1=1 
+		and aaa.ifmmSeq not in (
+	        select
+	        	aa.ifmmSeq
+	        from csfnMemberGroup cc
+				left join infrMember aa
+					on cc.ifmmSeq = aa.ifmmSeq
+			where 1=1 
+				and cc.csmgDelNy =0
+        )
+		and aaa.ifmmStatusCd = 119
+        and aaa.ifmmSeq != #{sessSeqUsr}
+        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr})
+        and aaa.ifmmId LIKE CONCAT(#{shValue})
+	</select>
+<!-- 	<select id="groupFriendList" resultMap="resultMapObj"> -->
+<!-- 		select -->
+<!-- 			d.csgrSeq -->
+<!-- 	        ,d.csgrName -->
+<!-- 	        ,aaa.ifmmSeq -->
+<!-- 	        ,aaa.ifmmName -->
+<!-- 	        ,(SELECT  -->
+<!-- 					COUNT(*) -->
+<!-- 				FROM infrMember bb  -->
+<!-- 	            LEFT JOIN csfnMemberGroup cc -->
+<!-- 					ON bb.ifmmSeq = cc.ifmmSeq -->
+<!-- 	            WHERE 1=1  -->
+<!-- 					AND cc.csgrSeq = d.csgrSeq -->
+<!-- 	            ) AS xCount -->
+<!--     from  -->
+<!-- 	    (select -->
+<!-- 			a.csfrSeq -->
+<!-- 	        ,a.ifmmToSeq -->
+<!-- 	        ,a.ifmmFromSeq -->
+<!-- 	        ,a.ifmmStatusCd -->
+<!-- 	        ,b.ifmmName -->
+<!-- 	        ,b.ifmmId -->
+<!-- 	        ,b.ifmmSeq -->
+<!-- 	        ,1 as ref -->
+<!-- 		from csfnFriends a -->
+<!-- 			left join infrMember b -->
+<!-- 				on b.ifmmSeq = a.ifmmToSeq -->
+<!-- 		union all -->
+<!-- 	        select -->
+<!-- 				a.csfrSeq -->
+<!-- 		        ,a.ifmmToSeq -->
+<!-- 		        ,a.ifmmFromSeq  -->
+<!-- 		        ,a.ifmmStatusCd -->
+<!-- 		        ,b.ifmmName -->
+<!-- 		        ,b.ifmmId -->
+<!-- 		        ,b.ifmmSeq -->
+<!-- 	        	,2 as ref -->
+<!-- 			from csfnFriends a -->
+<!-- 				left join infrMember b -->
+<!-- 					on b.ifmmSeq = a.ifmmFromSeq -->
+<!-- 		) as aaa -->
+<!--         left join csfnMemberGroup c -->
+<!--         on aaa.ifmmSeq = c.ifmmSeq -->
+<!--         left join csfnGroup d -->
+<!--         on d.csgrseq = c.csgrSeq -->
+<!--     where 1=1  -->
+<!-- 		and aaa.ifmmStatusCd = 119 -->
+<!--         and aaa.ifmmSeq != #{sessSeqUsr} -->
+<!--         and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr}) -->
+<!-- 	</select> -->
+	
+</mapper>

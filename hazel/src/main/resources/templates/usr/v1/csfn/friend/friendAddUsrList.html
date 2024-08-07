@@ -24,9 +24,17 @@
               <div class="row g-3">
                 <div class="col-auto">
                   <div class="search-box">
-                    <form class="position-relative" data-bs-toggle="search" method="post" data-bs-display="static">
-                      <input class="form-control search-input search" type="search" id="shValue" name="shValue" placeholder="Search orders" aria-label="Search" />
-                      <span class="fas fa-search search-box-icon"></span>
+                    <form id="form" name="form" class="position-relative" data-bs-toggle="search" method="post" data-bs-display="static">
+						<div class="row">
+							<div class="col-8"> 
+		                      <input class="form-control search-input search" type="search" id="shValue" name="shValue" placeholder="Search orders" aria-label="Search" />
+		                      <span class="fas fa-search search-box-icon"></span>
+		                     </div>
+		                      <div class="invalid-feedback" id="shValueFeedback"></div>
+		                     <div class="col-4">
+			                 	 <button class="btn btn-primary" id="search" type="button" >검색</button>
+			                 </div>
+		                 </div>
                     </form>
                   </div>
                 </div>
@@ -69,7 +77,7 @@
 	                      </th>
 	                      <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
 	                      <!-- <th class="sort align-middle text-end" scope="col" data-sort="total" style="width:6%;">TOTAL</th> -->
-	                      <th class="sort align-middle ps-8" scope="col" >이름</th>
+	                      <th class="sort align-middle ps-8" scope="col" >아이디(이름)</th>
 	                      <th class="sort align-middle text-start pe-3" scope="col" ></th>
 	                      <!-- <th class="sort align-middle text-start" scope="col" data-sort="delivery_type" style="width:30%;">DELIVERY TYPE</th> -->
 	                      <!-- <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">DATE</th> -->
@@ -81,14 +89,11 @@
 	                        <div class="form-check mb-0 fs-0">
 	                        </div>
 	                      </td>
-	                      <!-- <td class="order align-middle white-space-nowrap py-0"><a class="fw-semi-bold" href="#!">#2453</a></td> -->
-	                      <!-- <td class="total align-middle text-end fw-semi-bold text-1000">$87</td> -->
-	                      <td class="customer align-middle white-space-nowrap ps-8">
-	                          <h6 class="mb-0 ms-3 text-900">친구 이름을 입력해주세요!</h6>
+	                      <td colspan="4" class="fs--1 align-middle px-0 py-3">
+	                          <h6 class="mb-0 ms-3 text-900">친구 아이디를 입력해주세요!</h6>
 	                        </td>
-	                      <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-700">
 	                    </tr>
-	                    <tr th:if="${item !=null and item.ifmmName != null}" class="hover-actions-trigger btn-reveal-trigger position-static">
+	                    <tr th:unless="${item == null}" class="hover-actions-trigger btn-reveal-trigger position-static">
 	                      <td class="fs--1 align-middle px-0 py-3">
 	                        <div class="form-check mb-0 fs-0">
 	                        </div>
@@ -98,7 +103,7 @@
 	                      <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-900" href="../../../apps/e-commerce/landing/profile.html">
 	                          <div class="avatar avatar-m"><img class="rounded-circle" src="/usr/v1/template/phoenix-v1.13.0/assets/img/team/32.webp" alt="" />
 	                          </div>
-	                          <h6 th:text="${item.ifmmName}" class="mb-0 ms-3 text-900"></h6>
+	                          <h6 th:text="${item.ifmmId}" class="mb-0 ms-3 text-900"></h6>&nbsp;(<h6 th:text="${item.ifmmName}" class="mb-0 text-900"></h6>)
 	                          <input type="hidden" id="ifmmToSeq" name="ifmmToSeq" th:value="${item.ifmmSeq}">
 	                        </a></td>
 	                      <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-700">
@@ -109,6 +114,13 @@
 	                  </tbody>
 	                </table>
 	              </div>
+	              <div class="row align-items-center justify-content-center py-2 pe-0 fs--1">
+                <div class="col-auto d-flex">
+                  <button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
+                  <ul class="mb-0 pagination"></ul>
+                  <button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
+                </div>
+              </div>
 	            </div>
             </form>
           </div>
@@ -138,12 +150,47 @@
           let formAdd = document.querySelector("form[name=formAdd]");
       document.addEventListener("click", function(event) {
         if (event.target.classList.contains("btnAdd")) {
-          alert("#@34");
           formAdd.action = "/v1/csfn/friend/friendRequestUsrInsert";
           formAdd.submit();
         }
       });
+      
     </script>
+    
+    <script src="/usr/vi/js/validationUsr.js"></script>
+    
+    <script>
+	
+	document.getElementById("search").onclick = function() {
+	
+	if(validationInst() == false)return false;
+	}
+	
+	function validationInst() {
+		if(validationUpdt() == false) {
+			return false;
+			} else {
+				form.submit();
+			}
+	}
+	
+	//function validationUpdt() {
+	//	alert("name: " + document.getElementById("name").value)
+	//}					
+	
+	function validationUpdt(){
+		if(!checkNull('shValue', 2, "아이디를 입력해주세요")) return false;
+	}
+	
+	nullToEmpty = function(value){
+		if(value == null || value == 'null' || value.length == 0){
+			return false;
+		} else{
+			return true;
+		}
+	}
+	
+	</script>
 	
     <div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
 

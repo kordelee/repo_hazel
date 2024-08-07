@@ -35,6 +35,10 @@ public class BaseVo {
 	private String[] checkboxSeqArray;
 //	-----
 	
+//	session
+	private String sessSeqUsr;
+//	-----
+	
 	public void setParamsPaging(int totalRows) {
 		
 //		setThisPage(3);
@@ -273,6 +277,16 @@ public class BaseVo {
 
 	public void setCheckboxSeqArray(String[] checkboxSeqArray) {
 		this.checkboxSeqArray = checkboxSeqArray;
+	}
+
+
+	public String getSessSeqUsr() {
+		return sessSeqUsr;
+	}
+
+
+	public void setSessSeqUsr(String sessSeqUsr) {
+		this.sessSeqUsr = sessSeqUsr;
 	}
 	
 }

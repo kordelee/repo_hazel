@@ -10,6 +10,7 @@ public class MemberVo extends BaseVo{
 	private Integer shAdminNy = 0;
 //-----
 
+	private String sessSeqUsr;
 	public String getIfmmSeq() {
 		return ifmmSeq;
 	}
@@ -24,6 +25,14 @@ public class MemberVo extends BaseVo{
 
 	public void setShAdminNy(Integer shAdminNy) {
 		this.shAdminNy = shAdminNy;
+	}
+
+	public String getSessSeqUsr() {
+		return sessSeqUsr;
+	}
+
+	public void setSessSeqUsr(String sessSeqUsr) {
+		this.sessSeqUsr = sessSeqUsr;
 	}
 
 }

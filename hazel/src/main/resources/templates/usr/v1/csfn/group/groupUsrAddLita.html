@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<tr th:if="${item == null}" class="hover-actions-trigger btn-reveal-trigger position-static" id="tr-0" value="tr-0">
+      <td class="fs--1 align-middle px-0 py-3">
+        <div class="form-check mb-0 fs-0">
+        </div>
+      </td>
+      <td class="customer align-middle white-space-nowrap ps-8">
+          <h6 class="mb-0 ms-3 text-900">이미 추가된 친구거나 존재하지 않습니다</h6>
+      </td>
+    </tr>
+<tr th:unless="${item == null}" class="hover-actions-trigger btn-reveal-trigger position-static" id="tr-0" value="tr-0">
+	<input type="hidden" name="ifmmSeq" id="ifmmSeq" th:value="${item.ifmmSeq}">
+      <td class="fs--1 align-middle px-0 py-3">
+        <div class="form-check mb-0 fs-0">
+        </div>
+      </td>
+      <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-900" href="../../../apps/e-commerce/landing/profile.html">
+          <div class="avatar avatar-m"><img class="rounded-circle" src="/usr/v1/template/phoenix-v1.13.0/assets/img/team/32.webp" alt="" />
+          </div>
+          <h6 id="ifmmId" name="ifmmId" th:text="${item.ifmmId}" class="mb-0 ms-3 text-900"></h6>&nbsp;(<h6 id="ifmmName" name="ifmmName" th:text="${item.ifmmName}" class="mb-0 text-900"></h6>)</span>
+        </a></td>
+      <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-700"><span class="badge badge-phoenix fs--2 badge-phoenix-secondary"><span class="badge-label" style="height:14px;width:30px;"><button id="btnSAdd" value="btn-0" type="button">추가</button></span><span class="ms-1" data-feather="" style="height:12.8px;width:12.8px;"></span></span></td>
+    </tr>
+</html>
+

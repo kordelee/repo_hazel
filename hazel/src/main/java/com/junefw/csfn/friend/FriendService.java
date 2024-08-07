@@ -56,4 +56,9 @@ public class FriendService {
 		return dao.friendUelete(dto);
 	}
 	
+	public FriendDto searchMyFriend(FriendVo vo) throws Exception {
+		
+		return dao.searchMyFriend(vo);
+	}
+	
 }

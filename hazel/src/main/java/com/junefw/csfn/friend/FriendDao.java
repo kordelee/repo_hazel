@@ -6,6 +6,8 @@ public interface FriendDao {
 	
 	public FriendDto searchOne(FriendVo vo);
 	
+	public FriendDto searchMyFriend(FriendVo vo);
+	
 	public List<FriendDto> myRequestList(FriendVo vo);
 	
 	public List<FriendDto> myResponseList(FriendVo vo);

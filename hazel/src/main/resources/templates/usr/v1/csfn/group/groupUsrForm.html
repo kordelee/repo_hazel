@@ -17,68 +17,24 @@
             <div class="d-flex align-items-center"><img class="me-3" src="/usr/v1/template/phoenix-v1.13.0/assets/img/kanban/board.png" alt="" />
               <h1 class="mb-0 text-1100 fw-semi-bold">그룹생성</h1>
             </div>
-            <p class="mt-3">그룹을 생성하세요!</p>
           </div>
         </div>
-        <div class="kanban-create-board row">
-          <div class="col-xxl-5 col-xl-6 col-12 pb-8 order-1 order-xl-0">
+        <div class="kanban-create-board row mt-12">
+          <div class="col-xxl-5 col-xl-6 col-12 order-1 order-xl-0">
             <div class="theme-wizard theme-wizard-progress" data-theme-wizard="data-theme-wizard" data-create-board="data-create-board">
-              <div class="mt-6 border-bottom-0">
-                <p class="mb-0 text-800">Step: <span data-kanban-step="data-kanban-step">1</span></p>
-                <ul class="nav justify-content-between nav-wizard nav-wizard-progress">
-                  <li class="nav-item"><a class="nav-link active fw-semi-bold" href="#create-board-tab1" data-bs-toggle="tab" data-wizard-step="1"></a></li>
-                  <li class="nav-item"><a class="nav-link fw-semi-bold" href="#create-board-tab2" data-bs-toggle="tab" data-wizard-step="2"></a></li>
-                </ul>
-              </div>
               <div class="mt-6">
                 <div class="pt-4 pb-0">
                   <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" aria-labelledby="create-board-tab1" id="create-board-tab1">
                       
-                      <form id="createBoardForm1" novalidate="novalidate" data-wizard-form="1">
+                      <form id="form" name="form" method="post" novalidate="novalidate" data-wizard-form="1">
                         <p class="mb-4">그룹 이름을 입력하세요!</p>
                         <div class="form-floating">
-                          <input class="form-control" type="text" name="create-board-name" id="create-boardwizard-name" placeholder="그룹 이름을 입력하세요!"  />
+						  <input type="hidden" id="ifmmSeq" name="ifmmSeq">
+                          <input class="form-control" type="text" id="csgrName" name="csgrName" placeholder="그룹 이름을 입력하세요!"  />
                           <label for="create-boardwizard-name">그룹이름</label>
                         </div>
-                        <!-- <div class="form-floating mt-4">
-                          <select class="form-select" name="create-board-type" id="create-boardwizard-type">
-                            <option selected="selected" disabled="disabled" value="">Select event type</option>
-                            <option value="1">technical</option>
-                            <option value="2">external</option>
-                            <option value="3">organizational</option>
-                          </select>
-                          <label for="create-boardwizard-type">BOARD TYPE</label>
-                        </div> -->
-                        <!-- <div class="form-floating mt-4">
-                          <textarea class="form-control" placeholder="Leave a comment here" name="create-board-message" id="create-board-wizard-des" style="height: 128px"></textarea>
-                          <label for="create-board-wizard-des">DESCRIPTION (OPTIONAL)</label>
-                        </div> -->
                       </form>
-                    </div>
-                    <div class="tab-pane" role="tabpanel" aria-labelledby="create-board-tab2" id="create-board-tab2">
-                      <p class="mb-4">친구를 초대해 보세요!</p>
-                      <form id="createBoardForm2" novalidate="novalidate" data-wizard-form="2">
-                        <div class="kanban-column-item">
-                          <div class="kanban-column-input-container flex-grow-1">
-                            <div class="form-floating position-relative">
-                              <input class="form-control" type="text" name="column1" placeholder="column1" value="Unassaigned" id="create-board-wizard-column1" /><span class="fa-solid fa-bars kanban-column-icon text-700 fs--1"></span>
-                              <label class="ps-6" for="create-board-wizard-column1">COLUMN 1</label><span class="fa-solid fa-circle-xmark text-300 position-absolute top-50 end-0 translate-middle-y me-2"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                      <div class="d-grid">
-                        <button class="btn btn-lg btn-phoenix-secondary fs--1 bg-100"><span class="fas fa-plus me-2" data-fa-transform="shrink-3"></span>그룹멤버 추가</button>
-                      </div>
-                      <div class="border-top-0 mt-6" data-wizard-create-board-submit="data-wizard-create-board-submit">
-                        <div class="d-flex pager wizard list-inline mb-0">
-                          <button class="btn btn-link ps-0" type="button" data-board-prev-btn="data-board-prev-btn"><span class="fas fa-chevron-left me-1" data-fa-transform="shrink-3"></span>뒤로가기</button>
-                          <div class="flex-1 text-end">
-                            <button class="btn btn-primary px-6 px-sm-6" type="submit">저장<span class="fas fa-chevron-right ms-1" data-fa-transform="shrink-3"> </span></button>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -87,7 +43,7 @@
                 <div class="d-flex pager wizard list-inline mb-0">
                   <button class="d-none btn btn-link ps-0" type="button" data-wizard-prev-btn="data-wizard-prev-btn"><span class="fas fa-chevron-left me-1" data-fa-transform="shrink-3"></span>Previous</button>
                   <div class="flex-1 text-end">
-                    <button class="btn btn-primary px-6 px-sm-6" type="submit" data-wizard-next-btn="data-wizard-next-btn">다음<span class="fas fa-chevron-right ms-1" data-fa-transform="shrink-3"> </span></button>
+                    <button class="btn btn-primary px-6 px-sm-6" id="btnSave" type="button" data-wizard-next-btn="data-wizard-next-btn">저장<span class="fas fa-chevron-right ms-1" data-fa-transform="shrink-3"> </span></button>
                   </div>
                 </div>
               </div>
@@ -95,6 +51,16 @@
           </div>
           <div class="col-xxl-7 col-xl-6 col-12 text-center kanban-board-bg"><img class="d-dark-none mt-5 position-sticky" src="/usr/v1/template/phoenix-v1.13.0/assets/img/kanban/board-ligth.png" alt="" style="top: 200px" /><img class="d-light-none position-sticky" src="usr/v1/template/phoenix-v1.13.0/assets/img/kanban/board-dark.png" alt="" style="top: 200px" /></div>
         </div>
+        <footer class="footer position-absolute">
+          <div class="row g-0 justify-content-between align-items-center h-100">
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 mt-2 mt-sm-0 text-900">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2023 &copy;<a class="mx-1" href="https://themewagon.com">Themewagon</a></p>
+            </div>
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 text-600">v1.13.0</p>
+            </div>
+          </div>
+        </footer>
       </div>
     </main>
     <!-- ===============================================-->
@@ -106,6 +72,13 @@
     <!--    JavaScripts-->
     <!-- ===============================================-->
     <div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>
+    
+    <script>
+		document.getElementById("btnSave").onclick = function(){
+			form.action="/v1/csfn/group/groupUsrInsert";
+			form.submit();
+		}
+	</script>
 
   </body>
 

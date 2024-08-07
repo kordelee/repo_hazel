@@ -26,28 +26,39 @@ public class FriendController extends BaseController{
 //	친구요청 화면
 	
 	@RequestMapping (value = "/friendRequestUsrList")
-	public String friendRequestUsrList(FriendVo vo, Model model, HttpSession session) throws Exception {
+	public String friendRequestUsrList(FriendVo vo,FriendDto dto, Model model, HttpSession session) throws Exception {
 		
 		vo.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
 		
 		model.addAttribute("list", service.myResponseList(vo));
 		
+		System.out.println(dto.getIfmmId()+"AWEfaewfaewf");
+		
 		return pathCommonUsr + "friendRequestUsrList";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/friendRequestUsrAccept")
-	public Map<String, Object> friendRequestUsrAccept(FriendDto dto,HttpSession session) throws Exception {
-		Map<String, Object> returnMap = new HashMap<String, Object>();
-			
-			dto.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
-			
-			if(dto.getIfmmFromSeq() != null) {
-				returnMap.put("rt", "success");
-				service.updateAccept(dto);
-			}
-			
-			return returnMap;
+//	@ResponseBody
+//	@RequestMapping(value = "/friendRequestUsrAccept")
+//	public Map<String, Object> friendRequestUsrAccept(FriendDto dto,HttpSession session) throws Exception {
+//		Map<String, Object> returnMap = new HashMap<String, Object>();
+//			
+//			dto.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
+//			
+//			if(dto.getIfmmFromSeq() != null) {
+//				returnMap.put("rt", "success");
+//				service.updateAccept(dto);
+//			}
+//			
+//			return returnMap;
+//	}
+	
+	@RequestMapping (value = "/friendRequestUsrAccept")
+	public String friendRequestUsrAccept(FriendDto dto,FriendVo vo,HttpSession session) throws Exception {
+		dto.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
+		
+		service.updateAccept(dto);
+		
+		return pathRedirectCommonUsr + "friendUsrList";
 	}
 	
 	@ResponseBody
@@ -69,7 +80,7 @@ public class FriendController extends BaseController{
 	
 //	친구목록 화면
 	@RequestMapping (value = "/friendUsrList")
-	public String friendUsrList(FriendVo vo, Model model,HttpSession session) throws Exception {
+	public String friendUsrList(FriendVo vo,FriendDto dto, Model model,HttpSession session) throws Exception {
 		
 		vo.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
 		
@@ -85,7 +96,7 @@ public class FriendController extends BaseController{
 			
 			dto.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
 			
-			if(dto.getIfmmToSeq() != null) {
+			if(dto.getIfmmSeq() != null) {
 				returnMap.put("rt", "success");
 				service.friendUelete(dto);
 			}
@@ -106,7 +117,7 @@ public class FriendController extends BaseController{
 	}
 	
 	@RequestMapping (value = "/friendRequestUsrInsert")
-	public String friendRequestUsrInsert(FriendDto dto,HttpSession session) throws Exception {
+	public String friendRequestUsrInsert(FriendDto dto) throws Exception {
 		
 		service.requestInsert(dto);
 		
@@ -116,7 +127,7 @@ public class FriendController extends BaseController{
 //	나의요청화면
 	
 	@RequestMapping (value = "/friendMyRequestUsrList")
-	public String friendMyRequestUsrList(FriendVo vo, Model model,HttpSession session) throws Exception {
+	public String friendMyRequestUsrList(FriendVo vo,FriendDto dto, Model model,HttpSession session) throws Exception {
 		
 		vo.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
 		

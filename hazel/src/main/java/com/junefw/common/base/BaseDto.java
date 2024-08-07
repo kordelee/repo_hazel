@@ -33,6 +33,7 @@ public class BaseDto {
 	private Integer modDeviceCd;
 	private Date modDateTime;
 	private Date modDateTimeSvr;
+	private String sessSeqUsr;
 //-----
 	public String getTableName() {
 		return tableName;
@@ -177,6 +178,12 @@ public class BaseDto {
 	}
 	public void setModDateTimeSvr(Date modDateTimeSvr) {
 		this.modDateTimeSvr = modDateTimeSvr;
+	}
+	public String getSessSeqUsr() {
+		return sessSeqUsr;
+	}
+	public void setSessSeqUsr(String sessSeqUsr) {
+		this.sessSeqUsr = sessSeqUsr;
 	}
 	
 }

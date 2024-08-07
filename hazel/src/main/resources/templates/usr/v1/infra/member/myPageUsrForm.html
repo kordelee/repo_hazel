@@ -27,7 +27,7 @@
                     <div class="row g-3 mb-5">
                       <div class="col-12 col-lg-6">
                         <label class="form-label text-1000 fs-0 ps-0 text-capitalize lh-sm" for="fullName">이름</label>
-                        <input class="form-control" id="fullName" type="text" placeholder="Full name" />
+                        <input class="form-control" id="ifmmName" name="ifmmName" type="text" placeholder="Full name" th:value="${item.ifmmName}" />
                       </div>
                       <div class="col-12 col-lg-6">
                         <label class="form-label text-1000 fs-0 ps-0 text-capitalize lh-sm" for="gender">성별</label>
@@ -40,15 +40,15 @@
                       </div>
                       <div class="col-12 col-lg-6">
                         <label class="form-label text-1000 fs-0 ps-0 text-capitalize lh-sm" for="email">이메일</label>
-                        <input class="form-control" id="email" type="text" placeholder="Email" />
+                        <input class="form-control" id="email" type="text" placeholder="Email" th:value="${item.ifmmEmail}"/>
                       </div>
                       <div class="col-12 col-lg-6">
                           <label class="form-label text-1000 fs-0 ps-1 text-capitalize lh-sm mb-1">생년월일</label>
-                          <input class="form-control" id="email" type="text" placeholder="000123" />
+                          <input class="form-control" id="email" type="text" placeholder="000123" th:value="${item.ifmmDob}"/>
                       </div>
                       <div class="col-12 col-lg-6">
                         <label class="form-label text-1000 fw-bold fs-0 ps-0 text-capitalize lh-sm" for="phone">전화번호</label>
-                        <input class="form-control" id="phone" type="text" placeholder="+1234567890" />
+                        <input class="form-control" id="phone" type="text" placeholder="+1234567890" th:value="${item.ifmmPhoneNumber}" />
                       </div>
                       <div class="col-12 col-lg-6">
                         <label class="form-label text-1000 fw-bold fs-0 ps-0 text-capitalize lh-sm" for="alternative_phone">주소</label>

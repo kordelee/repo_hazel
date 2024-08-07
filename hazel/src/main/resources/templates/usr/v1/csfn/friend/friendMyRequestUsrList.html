@@ -11,6 +11,8 @@
     <main class="main" id="top">
 	  <div th:replace="~{usr/v1/infra/include/leftMenu :: leftMenu}"></div>          
       <div th:replace="~{usr/v1/infra/include/top :: top}"></div>
+      
+      
       <div class="content">
         <div class="mb-9">
           <div class="row g-3 mb-4">
@@ -23,55 +25,47 @@
               <div class="row g-3">
                 <div class="col-auto">
                   <div class="search-box">
-                    <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
-                      <input class="form-control search-input search" type="search" placeholder="Search orders" aria-label="Search" />
-                      <span class="fas fa-search search-box-icon"></span>
+					  <form id="form" name="form" class="position-relative" data-bs-toggle="search" method="post" data-bs-display="static">
+						<div class="row">
+							<div class="col-8"> 
+		                      <input class="form-control search-input search" type="search" id="shValue" name="shValue" placeholder="Search orders" aria-label="Search" />
+		                      <span class="fas fa-search search-box-icon"></span>
+		                     </div>
+		                      <div class="invalid-feedback" id="shValueFeedback"></div>
+		                     <div class="col-4">
+			                 	 <button class="btn btn-primary" id="search" type="button" >검색</button>
+			                 </div>
+		                 </div>
                     </form>
                   </div>
-                </div>
-                <div class="col-auto scrollbar overflow-hidden-y flex-grow-1">                 
-                </div>
-                <!-- 친구 추가 모달 -->
-                <div class="col-auto">
-                  <button class="btn btn-primary" style="margin-left: -150px;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">친구 추가</button>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">친구 추가</h5>
-                            <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs--1"></span></button>
-                          </div>
-                          <div class="modal-body">
-                            
-                            <input class="form-control" type="text">
-                            
-                          </div>
-                          <div class="modal-footer">
-                            <button class="btn btn-primary" type="button" data-bs-dismiss="modal">확인</button>
-                            <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">취소</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>           
                 </div>
               </div>
             </div>
             <form method="post" id="formList" name="formList">
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 top-1">
-              <div class="mx-n1 px-1">
-                <table id="eventTable" class="table table-sm fs--1 mb-0">
+              <div class="table-responsive mx-n1 px-1">
+                <table class="table table-sm fs--1 mb-0">
                   <thead>
                     <tr>
                       <th class="white-space-nowrap fs--1 align-middle ps-0" style="width:26px;">
                         <div class="form-check mb-0 fs-0">
                         </div>
                       </th>
-                      <th class="sort align-middle ps-8" scope="col" >이름</th>
+                      <th class="sort align-middle ps-8" scope="col" >아이디(이름)</th>
                       <th class="sort align-middle pe-3" scope="col" ></th>
                       <th class="sort align-middle text-start pe-3" scope="col" ></th>
                     </tr>
                   </thead>
                   <tbody >
+					  <tr th:if="${#lists.isEmpty(list)}" class="hover-actions-trigger btn-reveal-trigger position-static">
+	                      <td class="fs--1 align-middle px-0 py-3">
+	                        <div class="form-check mb-0 fs-0">
+	                        </div>
+	                      </td>
+	                      <td colspan="4" class="fs--1 align-middle px-0 py-3">
+	                          <h6 class="mb-0 ms-3 text-900">친구 요청을 친구 추가에서 보내보세요!</h6>
+	                        </td>
+	                    </tr>
                     <tr th:if="${!#lists.isEmpty(list)}" th:each="list,start : ${list}" th:id="tr_+${start.index}" name="ifmmToSeq" th:value="${list.ifmmToSeq}">
 					  <input type="hidden" name="ifmmToSeq" id="ifmmToSeq" th:value="${list.ifmmToSeq}">
                       <td class="fs--1 align-middle px-0 py-3">
@@ -80,7 +74,7 @@
                       </td>
                       <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-900" href="../../../apps/e-commerce/landing/profile.html">
                           <div class="avatar avatar-m"><img class="rounded-circle" src="/usr/v1/template/phoenix-v1.13.0/assets/img/team/32.webp" alt="" /></div>
-                          <h6 th:text="${list.ifmmName}" class="mb-0 ms-3 text-900"></h6>
+                          <h6 th:text="${list.ifmmId}" class="mb-0 ms-3 text-900"></h6>&nbsp;(<h6 th:text="${list.ifmmName}" class="mb-0 text-900"></h6>)
                         </a>
                       </td>
                       <td class="payment_status align-middle white-space-nowrap text-end fw-bold text-700"></td>
@@ -150,10 +144,6 @@
 		  }
 		  
 		});
-	</script>
-	
-	<script>
-		
 	</script>
 	
     <div th:replace="~{usr/v1/infra/include/linkJsFull :: linkJsFull}"></div>

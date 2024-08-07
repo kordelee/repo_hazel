@@ -306,8 +306,9 @@ public class MemberController extends BaseController{
 	}
     
 	@RequestMapping(value = "/myPageUsrView")
-	public String myPageUsrView() throws Exception{
+	public String myPageUsrView(MemberVo vo,MemberDto dto,Model model,HttpSession session) throws Exception{
 	
+		
 		return pathCommonUsr + "myPageUsrView";
 	}
 	
@@ -415,7 +416,11 @@ public class MemberController extends BaseController{
 	}
 	
 	@RequestMapping(value = "/myPageUsrForm")
-	public String myPageUsrForm() throws Exception{
+	public String myPageUsrForm(MemberVo vo,MemberDto dto,HttpSession session, Model model) throws Exception{
+		
+		vo.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
+		
+		model.addAttribute("item", service.selectOne(vo));
 		
 		return pathCommonUsr + "myPageUsrForm";
 	}
