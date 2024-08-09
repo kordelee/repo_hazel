@@ -16,6 +16,8 @@ public interface GroupDao {
 	
 	public List<GroupDto> friendAddList(GroupVo vo);
 	
+	public List<GroupDto> groupAcceptList(GroupVo vo);
+	
 	public GroupDto friendSearchOne(GroupVo vo);
 	
 	public GroupDto selectOne(GroupDto dto);
@@ -23,5 +25,7 @@ public interface GroupDao {
 	public int friendAdd(GroupDto dto);
 	
 	public int friendUelete(GroupDto dto);
+	
+	public int groupNameUpdate(GroupDto dto);
 	
 }

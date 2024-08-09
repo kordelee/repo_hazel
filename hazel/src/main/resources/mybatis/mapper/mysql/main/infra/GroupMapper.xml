@@ -168,6 +168,51 @@
         and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr})
 	</select>
 	
+	<select id="groupAcceptList" resultMap="resultMapObj">
+	select
+    *
+    from 
+	    (select
+			a.csfrSeq
+	        ,a.ifmmToSeq
+	        ,a.ifmmFromSeq
+	        ,a.ifmmStatusCd
+	        ,b.ifmmName
+	        ,b.ifmmId
+	        ,b.ifmmSeq
+	        ,1 as ref
+		from csfnFriends a
+			left join infrMember b
+				on b.ifmmSeq = a.ifmmToSeq
+		union all
+	        select
+				a.csfrSeq
+		        ,a.ifmmToSeq
+		        ,a.ifmmFromSeq 
+		        ,a.ifmmStatusCd
+		        ,b.ifmmName
+		        ,b.ifmmId
+		        ,b.ifmmSeq
+	        	,2 as ref
+			from csfnFriends a
+				left join infrMember b
+					on b.ifmmSeq = a.ifmmFromSeq
+		) as aaa 
+    where 1=1 
+		and aaa.ifmmSeq in (
+	        select
+	        	aa.ifmmSeq
+	        from csfnMemberGroup cc
+				left join infrMember aa
+					on cc.ifmmSeq = aa.ifmmSeq
+			where 1=1 
+			and cc.csmgDelNy =0
+        )
+		and aaa.ifmmStatusCd = 119
+        and aaa.ifmmSeq != #{sessSeqUsr}
+        and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr})
+	</select>
+	
 	<select id="friendSearchOne" resultMap="resultMapObj">
 	select
     aaa.ifmmName
@@ -214,6 +259,14 @@
         and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr})
         and aaa.ifmmId LIKE CONCAT(#{shValue})
 	</select>
+	
+	<update id="groupNameUpdate">
+		UPDATE csfnGroup 
+		SET 
+			csgrName = #{csgrName}
+		WHERE 1=1
+			AND csgrSeq = #{csgrSeq}
+	</update>
 <!-- 	<select id="groupFriendList" resultMap="resultMapObj"> -->
 <!-- 		select -->
 <!-- 			d.csgrSeq -->

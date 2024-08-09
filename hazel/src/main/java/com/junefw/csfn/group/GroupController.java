@@ -44,6 +44,8 @@ public class GroupController extends BaseController {
 		
 		model.addAttribute("list", service.friendAddList(vo));
 		
+		model.addAttribute("acceptList", service.groupAcceptList(vo));
+		
 		return pathCommonUsr + "groupUsrAdd";
 	}
 	
@@ -97,6 +99,26 @@ public class GroupController extends BaseController {
 		return returnMap;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/groupNameUpdate")
+	public Map<String, Object> groupNameUpdate(GroupDto dto,HttpSession session) throws Exception {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		
+		service.groupNameUpdate(dto);
+		returnMap.put("rt", "success");
+		
+		return returnMap;
+	}
+	
+//	@RequestMapping(value = "/groupNameUpdate")
+//	public String groupNameUpdate(GroupDto dto,HttpSession session) throws Exception {
+//		
+//		dto.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
+//		
+//			service.groupNameUpdate(dto);
+//		
+//		return pathRedirectCommonUsr + "groupUsrAdd";
+//	}
 //	@RequestMapping(value = "/groupUsrAdd")
 //	public String groupUsrAdd(Model model,GroupVo vo,FriendVo fvo,HttpSession session,GroupDto dto) throws Exception {
 //		fvo.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());

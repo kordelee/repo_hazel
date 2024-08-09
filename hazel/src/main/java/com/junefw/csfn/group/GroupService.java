@@ -36,6 +36,11 @@ public class GroupService {
 		return dao.friendAddList(vo);
 	}
 	
+	public List<GroupDto> groupAcceptList(GroupVo vo) throws Exception {
+		
+		return dao.groupAcceptList(vo);
+	}
+	
 	public GroupDto selectOne(GroupDto dto) throws Exception {
 		
 		return dao.selectOne(dto);
@@ -54,5 +59,10 @@ public class GroupService {
 	public int friendUelete(GroupDto dto) throws Exception {
 		
 		return dao.friendUelete(dto);
+	}
+	
+	public int groupNameUpdate(GroupDto dto) throws Exception {
+		
+		return dao.groupNameUpdate(dto);
 	}
 }
