@@ -46,6 +46,11 @@ public class GroupService {
 		return dao.selectOne(dto);
 	}
 	
+	public GroupDto groupSearchOne(GroupVo vo) throws Exception {
+		
+		return dao.groupSearchOne(vo);
+	}
+	
 	public GroupDto friendSearchOne(GroupVo vo) throws Exception {
 		
 		return dao.friendSearchOne(vo);

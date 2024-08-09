@@ -49,6 +49,14 @@ public class GroupController extends BaseController {
 		return pathCommonUsr + "groupUsrAdd";
 	}
 	
+	@RequestMapping(value = "/groupNameUpd")
+	public String groupNameUpd(GroupDto dto) throws Exception {
+		
+		service.groupNameUpdate(dto);
+		
+		return pathRedirectCommonUsr + "groupUsrAdd?csgrSeq="+dto.getCsgrSeq();
+	}
+	
 	@RequestMapping(value = "/groupUsrAddLita")
 	public String groupUsrAddLita(GroupVo vo, HttpSession session,Model model) throws Exception {
 		
@@ -73,6 +81,9 @@ public class GroupController extends BaseController {
 	public String groupUsrList(Model model,GroupVo vo,HttpSession session,GroupDto dto) throws Exception {
 		vo.setSessSeqUsr(session.getAttribute("sessSeqUsr").toString());
 		model.addAttribute("list", service.selectList(vo));
+			model.addAttribute("item", service.groupSearchOne(vo));
+		
+			System.out.println(vo.getShValue() + "!!!!!@AFefawefawefaews");
 		
 		return pathCommonUsr + "groupUsrList";
 	}
@@ -99,16 +110,16 @@ public class GroupController extends BaseController {
 		return returnMap;
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/groupNameUpdate")
-	public Map<String, Object> groupNameUpdate(GroupDto dto,HttpSession session) throws Exception {
-		Map<String, Object> returnMap = new HashMap<String, Object>();
-		
-		service.groupNameUpdate(dto);
-		returnMap.put("rt", "success");
-		
-		return returnMap;
-	}
+//	@ResponseBody
+//	@RequestMapping(value = "/groupNameUpdate")
+//	public Map<String, Object> groupNameUpdate(GroupDto dto,HttpSession session) throws Exception {
+//		Map<String, Object> returnMap = new HashMap<String, Object>();
+//		
+//		service.groupNameUpdate(dto);
+//		returnMap.put("rt", "success");
+//		
+//		return returnMap;
+//	}
 	
 //	@RequestMapping(value = "/groupNameUpdate")
 //	public String groupNameUpdate(GroupDto dto,HttpSession session) throws Exception {

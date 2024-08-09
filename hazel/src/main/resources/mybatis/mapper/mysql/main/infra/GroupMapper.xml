@@ -66,6 +66,7 @@
 					ON cc.ifmmSeq = bb.ifmmSeq
 	            WHERE 1=1 
 					AND bb.csgrSeq = a.csgrSeq
+					AND bb.csmgDelNy = 0
 	            ) AS xCount
         FROM csfnGroup a
         LEFT JOIN csfnMemberGroup b
@@ -74,6 +75,7 @@
 			ON c.ifmmSeq = b.ifmmSeq
 		WHERE 1=1 
 			AND b.ifmmSeq = #{sessSeqUsr}
+			AND b.csmgDelNy = 0
 	</select>
 	
 	<select id="selectOne" resultMap="resultMapObj">
@@ -211,6 +213,41 @@
 		and aaa.ifmmStatusCd = 119
         and aaa.ifmmSeq != #{sessSeqUsr}
         and (aaa.ifmmFromSeq = #{sessSeqUsr} or aaa.ifmmToSeq = #{sessSeqUsr})
+	</select>
+	
+	<select id="groupSearchOne" resultMap="resultMapObj">
+	SELECT
+	        a.csgrSeq
+	        ,a.csgrName
+	        ,b.csmgBossNy
+	        ,c.ifmmSeq
+	        ,(SELECT 
+				cc.ifmmName
+				FROM infrMember cc
+	            LEFT JOIN csfnMemberGroup bb
+					ON cc.ifmmSeq = bb.ifmmSeq
+	            WHERE 1=1
+					AND bb.csgrSeq = a.csgrSeq
+					AND bb.csmgBossNy = 1
+				LIMIT 1     
+			) AS bossName
+	        ,(SELECT 
+					COUNT(*)
+				FROM infrMember cc 
+	            LEFT JOIN csfnMemberGroup bb
+					ON cc.ifmmSeq = bb.ifmmSeq
+	            WHERE 1=1 
+					AND bb.csgrSeq = a.csgrSeq
+					AND bb.csmgDelNy = 0
+	            ) AS xCount
+        FROM csfnGroup a
+        LEFT JOIN csfnMemberGroup b
+			ON a.csgrSeq = b.csgrSeq
+        LEFT JOIN infrMember c
+			ON c.ifmmSeq = b.ifmmSeq
+		WHERE 1=1 
+			AND b.ifmmSeq = #{sessSeqUsr}
+			AND a.csgrName LIKE CONCAT(#{shValue})
 	</select>
 	
 	<select id="friendSearchOne" resultMap="resultMapObj">

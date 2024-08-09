@@ -41,7 +41,7 @@
                 </div>
               </div>
             </div>
-         <form id="formList" name="formList">
+         <form id="formList" name="formList" method="post">
 			<input type="hidden" id="csgrSeq" name="csgrSeq" th:value="${item.csgrSeq}"> 
 		  <div class="row g-5">
             <div class="col-12 col-lg-4">
@@ -63,6 +63,17 @@
                   <div class="d-flex flex-between-center mb-4">
                     <h4 class="card-title mt-4 mb-0">그룹에 추가된 친구</h4>
                   </div>
+                  <div th:if="${!#lists.isEmpty(acceptList)}" th:each="acceptList,start : ${acceptList}" th:id="divAccept_+${start.index}">
+					  <div class="d-flex justify-content-between align-items-center mb-3">
+			        <input type="hidden" th:id="ifmmSeq_+${start.index}" name="ifmmSeq" th:value="${acceptList.ifmmSeq}">
+			            <div class="">
+			                <h6 class="mb-0 ms-3 text-900" th:text="${acceptList.ifmmId}+'('+${acceptList.ifmmName}+')'"></h6>
+			            </div>
+			            <div class="">
+			                <button type="button" class="btn btn-sm text-500 hover-text-600 me-2" th:id="btnDel_+${start.index}"><span class="fas fa-trash"></span></button>
+			            </div>
+			        </div>
+				  </div>
                   <div id="friendList">
 				  </div>
                  <!-- <ul id="addedFriendsList" class="list-group mb-3">
@@ -284,10 +295,39 @@ document.addEventListener('click', function(event) {
 						}
 					});
 					
-			}	 
+			}
 			
 			i++;
 			
+		});
+		
+		document.addEventListener('click' , function(event){
+			if(event.target.id.startsWith("btnDel_")){
+				let i = 0;
+				let divAccept = document.getElementById("divAccept_"+i);
+				let ifmmSeq = document.getElementById("ifmmSeq_"+i).value;
+				
+				divAccept.remove();
+				$.ajax({
+						async: true 
+						,cache: false
+						,type: "post"
+						/* ,dataType:"json" */
+						,url: "/v1/csfn/group/friendUsrUelete"
+						/* ,data : $("#formLogin").serialize() */
+						,data : { ifmmSeq , "csgrSeq" : $("#csgrSeq").val()}
+						,success: function(response) {
+							if(response.rt == "success") {
+								//by pass
+							}
+						}
+						,error : function(jqXHR, textStatus, errorThrown){
+							alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
+						}
+					});
+					
+			}
+			i++;
 		});
 			
 		function aaa(ifmmSeq){
@@ -328,26 +368,18 @@ document.addEventListener('click', function(event) {
 					}
 				});
 		}
-		
-		document.getElementById("btnUpd").onclick = function(){
-			$.ajax({
-					async: true 
-					,cache: false
-					,type: "post"
-					/* ,dataType:"json" */
-					,url: "/v1/csfn/group/groupNameUpdate"
-					/* ,data : $("#formLogin").serialize() */
-					,data :{"csgrSeq" : $("#csgrSeq").val(),"csgrName" : $("#csgrName").val()}
-					,success: function(response) {
-						if(response.rt == "success") {
-								alert("그룹 이름이 변경되었습니다!");
-							}
-					}
-					,error : function(jqXHR, textStatus, errorThrown){
-						alert("ajaxUpdate " + jqXHR.textStatus + " : " + jqXHR.errorThrown);
-					}
-				});
+		document.getElementById("btnUpd").onclick = function(seq){
+			
+			let form = document.getElementById("formList");
+			
+			form.action = "/v1/csfn/group/groupNameUpd"
+			form.submit();
+			
+			alert("그룹 이름이 변경되었습니다!");
 		}
+		
+		
+		
 	</script>
 	
 	<!--<script>

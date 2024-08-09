@@ -18,6 +18,8 @@ public interface GroupDao {
 	
 	public List<GroupDto> groupAcceptList(GroupVo vo);
 	
+	public GroupDto groupSearchOne(GroupVo vo);
+	
 	public GroupDto friendSearchOne(GroupVo vo);
 	
 	public GroupDto selectOne(GroupDto dto);
