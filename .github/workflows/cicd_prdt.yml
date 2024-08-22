@@ -9,7 +9,7 @@ name: cicd_prdt
 on: [workflow_dispatch]
 
 env:
-  PROJECT_NAME: hotsixh
+  PROJECT_NAME: hazel
   AWS_REGION: ap-northeast-2
   S3_BUCKET: hr-cicd
   CODE_DEPLOY_APPLICATION_NAME: hr-hazel
