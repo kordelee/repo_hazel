@@ -50,6 +50,10 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
 	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.5'
+	
+	// https://mvnrepository.com/artifact/org.jsoup/jsoup
+	// implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
+	
 }
 
 tasks.named('test') {

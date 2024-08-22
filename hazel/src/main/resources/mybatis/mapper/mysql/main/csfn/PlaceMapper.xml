@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.junefw.csfn.place.PlaceDao">
+
+    <resultMap id="resultMapObj" type="com.junefw.csfn.place.PlaceDto"></resultMap>
+	
+	<insert id="insert">
+		INSERT INTO csfnPlace (
+			csplUrl
+			,csplName
+			,csplMemo
+			,csplCategoryCd
+			,csplArea1
+			,csplArea2
+			,csplDelNy
+			<include refid="Base.insertRegModColumn" />
+		) VALUES (
+			#{csplUrl}
+			,#{csplName}
+			,#{csplMemo}
+			,#{csplCategoryCd}
+			,#{csplArea1}
+			,#{csplArea2}
+			,0
+			<include refid="Base.insertRegModValue" />
+			<selectKey resultType="String" keyProperty="csplSeq" order="AFTER">
+				SELECT last_insert_id()
+		 	</selectKey>
+		)
+	</insert>
+	
+	<insert id="mappingInsert">
+		INSERT INTO csfnGroupPlace (
+			csplSeq
+			,csgrSeq
+			,csgpDelNy
+			<include refid="Base.insertRegModColumn" />
+		) VALUES (
+			#{csplSeq}
+			,#{csgrSeq}
+			,0
+			<include refid="Base.insertRegModValue" />
+		)
+	</insert>
+	
+	<select id="selectList" resultMap="resultMapObj">
+		SELECT
+			csplSeq
+			,csplUrl
+			,csplName
+			,csplMemo
+			,csplArea1
+			,csplArea2
+		FROM csfnPlace
+	</select>
+	
+	<select id="groupList" resultMap="resultMapObj">
+		SELECT
+			csgrSeq
+			,csgrName
+		FROM csfnGroup
+	</select>
+	
+	<select id="selectOne" resultMap="resultMapObj">
+		SELECT
+			csplSeq
+			,csplUrl
+			,csplName
+			,csplMemo
+			,csplArea1
+			,csplArea2
+		FROM csfnPlace
+		WHERE 1=1 
+			AND csplSeq = #{csplSeq}
+	</select>
+</mapper>
