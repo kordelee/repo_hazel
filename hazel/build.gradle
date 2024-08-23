@@ -9,9 +9,10 @@ group = 'labk9'
 version = '0.0.1'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+//	toolchain {
+//		languageVersion = JavaLanguageVersion.of(17)
+//	}
+	sourceCompatibility = '17'
 }
 
 repositories {
